@@ -1,2 +1,1 @@
-# lyrical-arctic-monkeys
-A smooth analysis of Arctic Monkeys song lyrics
+A very smooth analysis of Arctic Monkeys song lyrics in progress...
