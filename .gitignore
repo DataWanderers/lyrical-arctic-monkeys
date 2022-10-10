@@ -1,4 +1,8 @@
 /venv
 /.idea
 /src/__pycache__
+/data
+/viz
 .ipynb_checkpoints
+genius_access_token.txt
+IDEAS.ipynb
