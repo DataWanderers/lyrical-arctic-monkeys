@@ -24,18 +24,83 @@
             Arctic Monkeys Songs Untangled
         </h1>
         <p>
-            This is a scrollytelling demo. 
-            It was created using scrollama.js and d3.js. 
-            It assumes your screen is at least 1100 pixels wide
-            and it has only been tested on a modern Firefox browser.
-            Technical notes are down below.
+            This page tells you the story of how the song catalogue
+            of the Arctic Monkeys changed during their 15+ years of existence.
         </p>
         <p>
-            Have fun.
+            Read more on how the analysis came about on 
+            <a href="https://medium.com/@sborms/scraping-arctic-monkeys-songs-from-genius-31342eb44a23" target="_blank">Medium</a>.
         </p>
         <p class="seperator">
         </p>
       </section>
+
+      <section class="generic">
+        <h2 class="title">An introduction to the Sheffield boys</h2>
+        <p>
+            The Arctic Monkeys are a British rock band formed in Sheffield in 2002. Known for their distinctive sound and
+            clever lyrics, they quickly rose to prominence in the mid-2000s. Their debut album "Whatever People Say I Am, That's
+            What I'm Not (WPSIATWIN)" was released in 2006 and became the fastest-selling debut album in UK chart history.
+        </p>
+        <p>
+            The band, led by vocalist and guitarist <b>Alex Turner</b>, is celebrated for its fusion of indie rock, post-punk, and garage rock influences.
+            Other members include <b>Jamie Cook</b> on the guitar, <b>Nick O'Malley</b> as bass player, and drummer <b>Matt Helders</b>. The Monkeys have
+            earned critical acclaim and a devoted fan base, making them one of the most influential and enduring acts in modern rock music.
+        </p>
+        <p>
+            Over the years, they have released seven studio albums, which showcased their evolving musical style. Let's put exactly
+            this to the test of data analysis and visualization!
+        </p>
+      </section>
+
+      <section class="generic">
+        <h2 class="title">The importance of common song sections</h2>
+        <p>
+            The structure of a song is often divided into different sections. The most common ones are the intro, a verse, the chorus, the bridge,
+            and the outro. Each section has its own characteristics and importance. For example, the <b>chorus</b> is often the most important
+            part of a song, as it contains the main message. The <b>verse</b> is the part that tells the story, and the <b>bridge</b>
+            is a transition between the verse and chorus. The <b>intro</b> and <b>outro</b> are the beginning and end of a song.
+        </p>
+      </section>
+
+      <!-- <section id="scrolly">
+          
+        <figure>
+          <div class="viz" id="main_viz"></div>
+        </figure>
+
+        <article>
+
+        </article>        
+      </section> -->
+
+      <section class="generic">
+        <h2 class="title">How lyrically varied are Alex Turner's texts really</h2>
+        <p>
+            To measure the lyrical variation of a song, a useful metric is the so-called <b>lexical diversity</b>.
+            This metric is the ratio of the number of unique words versus the total number of words in a song. In other <i>words</i>,
+            the higher this value, the more unique a song can be considered.
+        </p>
+      </section>
+
+      <!-- <section id="scrolly">
+          
+        <figure>
+          <div class="viz" id="main_viz"></div>
+        </figure>
+
+        <article>
+
+        </article>        
+      </section> -->
+
+      <section class="generic">
+        <h2 class="title">The beat of romantic words</h2>
+        <p>
+            <b>Lexical dispersion</b> shows when and how often words occur in a song. You can think of it as a timeline of
+            the words in a song. The graphs below will take you through that timeline for a couple of common romantic words.
+        </p>
+    </section>
 
       <section id="scrolly">
           
@@ -44,9 +109,7 @@
         </figure>
 
         <article>
-            
             <div class="step" data-step="1">
-              
                 <h2>The Album</h2>
                 <p>
                     The story starts with a music album.
@@ -140,12 +203,11 @@
         <p class="seperator">
         </p>
         <p>
-            That's a wrap.
-            I hope you enjoyed this scrollytelling demo.
-            The technical notes are available on <a href="https://github.com/edriessen/scrollytelling-scrollama-d3-demo">Github</a>.
-        </p>  
+            That was it! I hope you enjoyed this little interactive story about the Arctic Monkeys.
+        </p>
         <p>
-            If you have any question, <a href="http://www.edriessen.com/contact/">please do reach out to me</a>. 
+            If you like this, I would love to share my enthusiasm about the Arctic Monkeys, music, and data analysis with you.
+            You can contact me through my <a href="http://www.samborms.com/" target="_blank">website</a>. 
         </p>    
     </section>
     </main>
@@ -155,7 +217,9 @@
     <script src="src/intersection-observer.js"></script>
     <script src="src/stickyfill.min.js"></script>
     <script src="src/scrollama.min.js"></script>
+
     <script src="data/aviciiTimData.js"></script>
+
     <script src="d3-animations.js"></script>
     <script src="scrollama-settings.js"></script>
   </body>

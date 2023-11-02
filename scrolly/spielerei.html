@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+<script>
+    // Your data
+    const data = [
+        { Album: "WPSIATWIN", Minimum: 57.09, Median: 70.18, Average: 70.01, Maximum: 83.23 },
+        { Album: "Favourite WN", Minimum: 64.48, Median: 70.24, Average: 72.27, Maximum: 90.40 },
+        { Album: "Humbug", Minimum: 57.59, Median: 78.87, Average: 73.45, Maximum: 83.27 },
+        { Album: "Suck It and See", Minimum: 39.0, Median: 81.03, Average: 78.77, Maximum: 91.85 },
+        { Album: "AM", Minimum: 41.48, Median: 67.69, Average: 66.18, Maximum: 86.48 },
+        { Album: "TBH & Casino", Minimum: 57.46, Median: 82.91, Average: 80.92, Maximum: 90.48 },
+        { Album: "The Car", Minimum: 62.11, Median: 91.48, Average: 87.04, Maximum: 94.19 }
+    ];
+
+    // Set up the chart dimensions
+    const margin = { top: 20, right: 20, bottom: 40, left: 100 };
+    const width = 600 - margin.left - margin.right;
+    const height = 400 - margin.top - margin.bottom;
+
+    // Create an SVG element for the main chart
+    const svg = d3.select("body")
+        .append("svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Create an SVG element for the legend
+    const legendSvg = d3.select("body")
+        .append("svg")
+        .attr("width", 250)  // Adjust the width as needed
+        .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+        .attr("transform", `translate(${margin.left}, ${margin.top})`);
+
+    // Create scales for x and y axes
+    const xScale = d3.scaleLinear()
+        .domain([0, d3.max(data, d => d.Maximum)]).nice()
+        .range([0, width]);
+
+    const yScale = d3.scaleBand()
+        .domain(data.map(d => d.Album))
+        .range([0, height])
+        .padding(0.3);
+
+    // Define colors for Minimum, Median, and Maximum
+    const colorScale = d3.scaleOrdinal()
+        .domain(["Minimum", "Median", "Maximum"])
+        .range(["blue", "orange", "red"]);
+
+    // Add y and x axes
+    svg.append("g")
+        .call(d3.axisLeft(yScale));
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(xScale));
+
+    // Add x-axis label
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", height + margin.bottom - 5) // Adjust the position as needed
+        .style("text-anchor", "middle")
+        .text("Lexical diversity (%)");
+
+    svg.append("g")
+        .attr("transform", `translate(0,${height})`)
+        .call(d3.axisBottom(xScale));
+
+    // Create dots for Minimum, Median, and Maximum values
+    const dotRadius = 5;
+    data.forEach(d => {
+        // Add connecting line between Minimum and Maximum first
+        svg.append("line")
+            .attr("x1", xScale(d.Minimum))
+            .attr("x2", xScale(d.Maximum))
+            .attr("y1", yScale(d.Album) + yScale.bandwidth() / 2)
+            .attr("y2", yScale(d.Album) + yScale.bandwidth() / 2)
+            .style("stroke", "black")
+            .style("stroke-width", 1);
+
+        keys = ["Minimum", "Median", "Maximum"];
+        keys.forEach(key => {
+            svg.append("circle")
+                .attr("class", key)
+                .attr("cx", xScale(d[key]))
+                .attr("cy", yScale(d.Album) + yScale.bandwidth() / 2)
+                .attr("r", dotRadius)
+                .style("fill", colorScale(key));
+        });
+    });
+
+    // Create legend items
+    const legend = legendSvg.selectAll(".legend")
+        .data(keys)
+        .enter()
+        .append("g")
+        .attr("class", "legend")
+        .attr("transform", (d, i) => `translate(0,${i * 20})`);  // Adjust spacing
+
+    legend.append("rect")
+        .attr("x", 0)
+        .attr("width", 15)  // Width of the legend color box
+        .attr("height", 15)  // Height of the legend color box
+        .style("fill", d => colorScale(d));
+
+    legend.append("text")
+        .attr("x", 20)  // Spacing from the color box
+        .attr("y", 10)  // Center text vertically
+        .style("text-anchor", "start")
+        .text(d => d);
+</script>
+</body>
+</html>

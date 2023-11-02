@@ -4,13 +4,12 @@ a,abbr,acronym,address,applet,big,blockquote,body,caption,cite,code,dd,del,dfn,d
 /* CSS */
 body {
     font-family: "Roboto";
-    font-weight: 300;
+    font-weight: 325;
     font-size: 18px;
     line-height: 1.5em;
     background-color: #F2E8DC;
     color: #01080D;
 }
-
 
 h1 {
     font-size: 3em;
@@ -21,6 +20,13 @@ h1 {
 
 h1 strong, h2, h3 {
     font-weight: 700;
+}
+
+h2.title {
+    font-size: 2em;
+    line-height: 1em;
+    margin-bottom: 25px;
+    color:rgb(68, 13, 13);
 }
 
 h3 {
