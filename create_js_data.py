@@ -1,10 +1,21 @@
 import numpy as np
 import pandas as pd
-import spacy
 
 import src.utils as utl
 
-TERMS_ROMANCE = ["love", "girl", "kiss", "baby", "dance", "heart"]
+TERMS_ROMANCE = [
+    "love",
+    "girl",
+    "kiss",
+    "baby",
+    "dance",
+    "heart",
+    "passion",
+    "desire",
+    "eyes",
+    "honey",
+]
+
 SONG_SECTIONS = [
     "INTRO",
     "VERSE",
@@ -15,6 +26,8 @@ SONG_SECTIONS = [
     "INSTRUMENTAL",
     "OUTRO",
 ]
+
+DIR_DATA = "scrolly/data"
 
 #########################
 ##### FUNCTIONS         #
@@ -52,103 +65,103 @@ def prepare_data(data):
 
 
 def create_data_song_sec_importance(data):
-    """Creates aggregated song section importance data and stores as .js files."""
-    sections_by_album = data.groupby("album_key")["song_section"].value_counts()
+    """Creates and stores aggregated song section importance data."""
+    sections_by_album = data.groupby("album_key")["song_sec"].value_counts()
+    sections_by_album.name = "n"
     sections_by_album = sections_by_album.reset_index()
-    pd.pivot_table(
-        sections_by_album, values="count", columns="album_key", index="song_section"
-    )
+    pd.pivot_table(sections_by_album, values="n", columns="album_key", index="song_sec")
 
-    song_sections_by_album = utl.get_sec_rel_by_key(data, key="album_key")
+    # importanceAlbums
+    song_sections_by_album = utl.get_section_rel_by_key(data, key="album_key")
     song_sections_by_album = song_sections_by_album.fillna(0).transpose()[SONG_SECTIONS]
     song_sections_by_album = utl.group_chorus(song_sections_by_album)
-    song_sections_by_album.index = [f[3:] for f in song_sections_by_album.index]
+    song_sections_by_album.reset_index(drop=False, inplace=True)
+    song_sections_by_album = utl.prepare_columns(
+        song_sections_by_album, {"album_key": "Album"}
+    )
+    utl.save_to_js(DIR_DATA, "importanceAlbums", song_sections_by_album)
 
+    # importanceSongs
     song_sections_by_song = (
         data[["album_key", "song_tit"]]
         .drop_duplicates()
         .merge(
-            utl.get_sec_rel_by_key(data, key="song_tit").transpose(),
+            utl.get_section_rel_by_key(data, key="song_tit").transpose(),
             on="song_tit",
         )
         .fillna(0)
         .set_index("album_key")[["song_tit"] + SONG_SECTIONS]
     )
+    song_sections_by_song.reset_index(drop=False, inplace=True)
+    song_sections_by_song = utl.prepare_columns(
+        song_sections_by_song, {"album_key": "Album", "song_tit": "Song"}
+    )
+    utl.save_to_js(DIR_DATA, "importanceSongs", song_sections_by_song)
 
 
 def create_data_lexdiv(data):
-    """Creates aggregated lexical diversity data and stores as .js files."""
+    """Creates and stores aggregated lexical diversity data."""
+    # diversityAlbums
     lexical_div_by_album = (
         data.groupby(["album_key"])["song_lexdiv"].agg({min, np.median, max}) * 100
-    )
-    lexical_div_by_album = lexical_div_by_album[["min", "median", "max"]]
+    )[["min", "median", "max"]]
     lexical_div_by_album.columns = ["Minimum", "Median", "Maximum"]
-    lexical_div_by_album.index = [f[3:] for f in lexical_div_by_album.index]
+    lexical_div_by_album.reset_index(drop=False, inplace=True)
+    lexical_div_by_album = utl.prepare_columns(
+        lexical_div_by_album, {"album_key": "Album"}
+    )
+    utl.save_to_js(DIR_DATA, "diversityAlbums", lexical_div_by_album)
+
+    # diversitySongs
+    lexical_div_by_song = (
+        data[["album_key", "song_tit", "song_lexdiv"]]
+        .drop_duplicates()
+        .reset_index(drop=True)
+    )
+    lexical_div_by_song["song_lexdiv"] = lexical_div_by_song["song_lexdiv"] * 100
+    lexical_div_by_song = utl.prepare_columns(
+        lexical_div_by_song,
+        {"album_key": "Album", "song_tit": "Song", "song_lexdiv": "Diversity"},
+    )
+    utl.save_to_js(DIR_DATA, "diversitySongs", lexical_div_by_song)
 
 
 def create_data_lexical_dispersion(data, dtm):
-    """Creates aggregated lexical dispersion data and stores as .js files."""
-    nlp = spacy.load("en_core_web_md")  # python -m spacy download en_core_web_md
-
-    full_songs = (
-        data[["album_key", "song_tit", "song_sec_lyrics"]]
-        .groupby(["album_key", "song_tit"])["song_sec_lyrics"]
-        .apply(lambda x: " ".join(x))
-        .reset_index()
-        .rename(columns={"song_sec_lyrics": "song_lyrics"})
-    )
-    full_songs["song_lyrics"] = full_songs["song_lyrics"].str.strip()
-
-    dict_pos = {}
-    for i, lyrics in enumerate(full_songs["song_lyrics"]):
-        pos = utl.extract_pos(lyrics)
-        dict_pos[i] = pos
-
-    full_songs = pd.concat(
-        [full_songs, pd.DataFrame.from_dict(dict_pos, orient="index")], axis=1
-    )
-
-    all_nouns = full_songs.set_index("song_tit")["nouns"].explode()
-    all_nouns = all_nouns.reset_index().merge(
-        full_songs[["album_key", "song_tit"]], on="song_tit", how="left"
-    )
-    all_nouns_n = (
-        all_nouns.set_index(["album_key"])
-        .groupby("album_key")["nouns"]
-        .value_counts()
-        .reset_index()
-    )
-
+    """Creates and stores aggregated lexical dispersion data."""
     dtm = pd.concat([data[["album_key", "song_nr", "song_tit"]], dtm], axis=1)
     word_counts = dtm.groupby(["album_key", "song_nr", "song_tit"]).sum()
-    print(word_counts.sum(axis=0)[TERMS_ROMANCE])  # nbr. of mentions
 
-    word_counts_across_songs = (word_counts > 0).sum(axis=0).sort_values()
-
-    print(word_counts_across_songs[TERMS_ROMANCE])  # nbr. of songs
-    word_counts[TERMS_ROMANCE].groupby("album_key").sum()
-    piv_word_counts = pd.pivot_table(
-        word_counts[TERMS_ROMANCE], columns="song_nr", index="album_key"
-    )
-
+    # dispersionAlbums
     lexical_disp_by_album = word_counts[TERMS_ROMANCE].groupby("album_key").sum()
-    lexical_disp_by_album.index = [f[3:] for f in lexical_disp_by_album.index]
-
-    lexical_disp_by_song = (
-        word_counts[TERMS_ROMANCE]
-        .reset_index()
-        .drop(columns=["album_key", "song_nr", "song_tit"])
-        .transpose()
+    lexical_disp_by_album.reset_index(drop=False, inplace=True)
+    lexical_disp_by_album = utl.prepare_columns(
+        lexical_disp_by_album, {"album_key": "Album"}
     )
+    utl.save_to_js(DIR_DATA, "dispersionAlbums", lexical_disp_by_album)
+
+    # dispersionSongs
+    lexical_disp_by_song = (
+        word_counts[TERMS_ROMANCE].reset_index(drop=False).drop(columns="song_nr")
+    )
+    lexical_disp_by_song = utl.prepare_columns(
+        lexical_disp_by_song, {"album_key": "Album", "song_tit": "Song"}
+    )
+    utl.save_to_js(DIR_DATA, "dispersionSongs", lexical_disp_by_song)
+
+    # word_counts.sum(axis=0)[TERMS_ROMANCE]  # nbr. of mentions
+    # word_counts[TERMS_ROMANCE].groupby("album_key").sum()  # nbr. of albums
+    # (word_counts > 0).sum(axis=0).sort_values()[TERMS_ROMANCE]  # nbr. of songs
 
 
 #########################
 
 if __name__ == "__main__":
-    data_raw = pd.read_excel("../data/data_lyrics_arctic_monkeys_full.xlsx")
+    data_raw = pd.read_excel("data/data_lyrics_arctic_monkeys_full.xlsx")
 
     data, dtm = prepare_data(data_raw)
+    print("Data prepared!")
 
     create_data_song_sec_importance(data)
     create_data_lexdiv(data)
     create_data_lexical_dispersion(data, dtm)
+    print("Data stored!")

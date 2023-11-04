@@ -15,40 +15,18 @@ def get_dtm(texts):
     cv = CountVectorizer(analyzer="word")
     cv_matrix = cv.fit_transform(texts)
 
-    df_dtm = pd.DataFrame(cv_matrix.toarray(), columns=cv.get_feature_names())
+    df_dtm = pd.DataFrame(cv_matrix.toarray(), columns=cv.get_feature_names_out())
 
     return df_dtm
 
 
-def extract_pos(lyrics):
-    """Returns a dict with (proper) nouns, noun phrases, verbs, and entities found."""
-    doc = nlp(lyrics)
-
-    nouns = [token.lemma_ for token in doc if token.pos_ == "NOUN"]
-    pnouns = [token.lemma_ for token in doc if token.pos_ == "PROPN"]
-    noun_phrases = [chunk.text for chunk in doc.noun_chunks]
-    verbs = [token.lemma_ for token in doc if token.pos_ == "VERB"]
-    entities = [(ent.text, ent.label_) for ent in doc.ents]
-
-    out = {
-        "nouns": nouns,
-        "pnouns": pnouns,
-        "noun_phrases": noun_phrases,
-        "verbs": verbs,
-        "entities": entities,
-    }
-
-    return out
-
-
 def get_section_rel_by_key(data, key="album_key"):
-    """Returns song_section vs. {key} pivot table with relative nbr. of seconds."""
-    sums = data.groupby([key, "song_section"])["section_duration"].sum()
+    """Returns 'song_sec' vs. {key} pivot table with relative nbr. of seconds."""
+    sums = data.groupby([key, "song_sec"])["sec_dur"].sum()
     totals = sums.groupby([key]).sum()
     rel = (sums.div(totals) * 100).reset_index()
-    df_piv = pd.pivot_table(
-        rel, values="section_duration", columns=key, index="song_section"
-    )
+    df_piv = pd.pivot_table(rel, values="sec_dur", columns=key, index="song_sec")
+    df_piv.index.name = None
 
     return df_piv
 
@@ -58,3 +36,20 @@ def group_chorus(df):
     df["CHORUS"] = df.filter(regex="CHORUS").sum(axis=1)
     df = df.drop(columns=["PRE-CHORUS", "POST-CHORUS"])
     return df
+
+
+def prepare_columns(df, dict_to_rename={}):
+    """Cleans column names."""
+    df["album_key"] = df["album_key"].apply(lambda x: x[3:])
+    for col, col_new in dict_to_rename.items():
+        df = df.rename(columns={col: col_new})
+    df.columns = df.columns.str.capitalize()
+    return df
+
+
+def save_to_js(dir, var_name, df):
+    """Saves a Python dictionary to a JavaScript file."""
+    with open(f"{dir}/{var_name}.js", "w") as file:
+        file.write(f"const {var_name} = ")
+        file.write(df.to_json(orient="records"))
+        file.write(";")

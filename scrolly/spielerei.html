@@ -2,19 +2,12 @@
 <html>
 <head>
     <script src="https://d3js.org/d3.v6.min.js"></script>
+    <script src="data/diversityAlbums.js"></script>
 </head>
 <body>
 <script>
     // Your data
-    const data = [
-        { Album: "WPSIATWIN", Minimum: 57.09, Median: 70.18, Average: 70.01, Maximum: 83.23 },
-        { Album: "Favourite WN", Minimum: 64.48, Median: 70.24, Average: 72.27, Maximum: 90.40 },
-        { Album: "Humbug", Minimum: 57.59, Median: 78.87, Average: 73.45, Maximum: 83.27 },
-        { Album: "Suck It and See", Minimum: 39.0, Median: 81.03, Average: 78.77, Maximum: 91.85 },
-        { Album: "AM", Minimum: 41.48, Median: 67.69, Average: 66.18, Maximum: 86.48 },
-        { Album: "TBH & Casino", Minimum: 57.46, Median: 82.91, Average: 80.92, Maximum: 90.48 },
-        { Album: "The Car", Minimum: 62.11, Median: 91.48, Average: 87.04, Maximum: 94.19 }
-    ];
+    let data = diversityAlbums;
 
     // Set up the chart dimensions
     const margin = { top: 20, right: 20, bottom: 40, left: 100 };

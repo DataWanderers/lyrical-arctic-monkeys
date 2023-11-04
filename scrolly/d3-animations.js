@@ -44,14 +44,14 @@ const z = d3.scaleLinear()
     .domain([0, 1])
     .range([1, 4]);
               
-var tooltip = d3.select("#avicii_viz")
+var tooltip = d3.select("#main_viz")
     .append("div")
     .style("opacity", 0)
     .attr("class", "tooltip")
 
 // change tooltip text based on position in story
-function returnTooltipText(step, d){
-    switch (step){
+function returnTooltipText(step, d) {
+    switch (step) {
         case "title":
             return d.index + ": " + d.title
         case "title score":
@@ -65,7 +65,7 @@ function returnTooltipText(step, d){
 }
               
 // create two functions to show and hide the tooltip
-var showTooltip = function(d){
+var showTooltip = function(d) {
     tooltip
         .transition()
         .duration(200)
@@ -74,7 +74,7 @@ var showTooltip = function(d){
         .html(returnTooltipText(toolTipState, d))
 }
 
-var hideTooltip = function(d){
+var hideTooltip = function(d) {
     tooltip
         .transition()
         .duration(200)
@@ -104,7 +104,7 @@ var yAxis = d3.axisLeft().scale(y);
 // various functions to update chart elements
 //*
 
-function dotColorGrey(){
+function dotColorGrey() {
     bubbleChart
         .data(data)
         .transition()
@@ -113,16 +113,16 @@ function dotColorGrey(){
                 .style("fill", "#F2E8DC")
 }
 
-function dotColorSentiment(){
+function dotColorSentiment() {
     bubbleChart               
         .data(data)
         .transition()
             .duration(1000)
                 .attr("r", 10)  
-                .style("fill", function(d){ 
-                if (d.score > 0){
+                .style("fill", function(d) { 
+                if (d.score > 0) {
                     return color_mapping.green
-                } else if (d.score < 0){
+                } else if (d.score < 0) {
                     return color_mapping.red
                 } else {
                     return color_mapping.grey
@@ -130,7 +130,7 @@ function dotColorSentiment(){
     })
 }
 
-function dotResize(){
+function dotResize() {
     x.domain([0, 13]);
     
     svg.selectAll(".Xaxis")
@@ -154,7 +154,7 @@ function dotResize(){
             .attr("r", d => (d.magnitude*2.7));
 }
 
-function dotPositionScore(){
+function dotPositionScore() {
     x.domain([-.8, .8]);
     
     svg.selectAll(".Xaxis")
@@ -179,8 +179,8 @@ function dotPositionScore(){
             .attr("cy", d => y(1))
 }
 
-function dotPositionMagnitude(){
-    y.domain([1, d3.max(data, function(d){ return d.magnitude + 1 })]);
+function dotPositionMagnitude() {
+    y.domain([1, d3.max(data, function(d) { return d.magnitude + 1 })]);
     
     svg.selectAll(".Yaxis")
         .transition()
@@ -192,10 +192,10 @@ function dotPositionMagnitude(){
         .data(data)
         .transition()
         .duration(1000)
-            .style("fill", function(d){ 
-                if (d.score > 0){
+            .style("fill", function(d) { 
+                if (d.score > 0) {
                     return color_mapping.green
-                } else if (d.score < 0){
+                } else if (d.score < 0) {
                     return color_mapping.red
                 } else {
                     return color_mapping.grey
@@ -205,7 +205,7 @@ function dotPositionMagnitude(){
             .attr("cy", d => y(d.magnitude))
 }
 
-function dotSimplify(){
+function dotSimplify() {
     bubbleChart
         .data(data)
         .transition()
@@ -214,15 +214,15 @@ function dotSimplify(){
             .attr("r", 5)
 }
 
-function toggleAxesOpacity(toggleX, toggleY, opacity){
-    if (toggleX){
+function toggleAxesOpacity(toggleX, toggleY, opacity) {
+    if (toggleX) {
         svg.selectAll(".Xaxis")
             .transition()
             .duration(1000)
                 .style("opacity", opacity)
     }
     
-    if (toggleY){
+    if (toggleY) {
         svg.selectAll(".Yaxis")
             .transition()
             .duration(1000)
@@ -230,14 +230,14 @@ function toggleAxesOpacity(toggleX, toggleY, opacity){
     }
 }
 
-function drawStraightPath(){
-    if (typeof line === "undefined"){
+function drawStraightPath() {
+    if (typeof line === "undefined") {
         var path = d3.path();
                           
-        for (var item = 0; item < data.length; item++){
+        for (var item = 0; item < data.length; item++) {
             let x_value = data[item].score
             let y_value = data[item].magnitude
-            if (item === 0){
+            if (item === 0) {
                 path.moveTo(x(x_value), y(y_value));
             } else {
                 path.lineTo(x(x_value), y(y_value));
@@ -262,7 +262,7 @@ function drawStraightPath(){
         .attr("stroke-dashoffset", 0)
 }
 
-function hideStraightPath(){
+function hideStraightPath() {
     line
         .transition()
         .duration(3000)
@@ -271,21 +271,21 @@ function hideStraightPath(){
     
 }
 
-function toggleElementOpacity(element, opacity){
+function toggleElementOpacity(element, opacity) {
     element
         .transition()
         .duration(1000)
             .style("opacity", opacity)
 }
 
-function drawBezierPath(){
-    if (typeof lineBezier === "undefined"){
+function drawBezierPath() {
+    if (typeof lineBezier === "undefined") {
         var pathBezier = d3.path();
 
-        for (var item = 0; item < bezierData.length; item++){
+        for (var item = 0; item < bezierData.length; item++) {
             let currenItem = bezierData[item];
 
-            if (item === 0){
+            if (item === 0) {
                 pathBezier.moveTo(x(currenItem[0]), y(currenItem[1]));
             }
 
@@ -319,7 +319,7 @@ function drawBezierPath(){
             .attr("stroke-dashoffset", 0);
 }
 
-function hideBezierPath(){
+function hideBezierPath() {
     lineBezier
         .attr("fill", "none")
         .transition()
