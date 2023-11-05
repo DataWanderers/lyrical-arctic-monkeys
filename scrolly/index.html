@@ -3,21 +3,47 @@
   <head>
       <meta charset="utf-8" />
       <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+
       <title>Arctic Monkeys Songs Untangled</title>
       <meta name="description" content="Arctic Monkeys Songs Untangled" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+      <!-- Load (external) scripts here -->
+      <script defer src="src/d3.5.9.1.min.js"></script>
+      <script defer src="src/intersection-observer.js"></script>
+      <script defer src="src/stickyfill.min.js"></script>
+      <script defer src="src/scrollama.min.js"></script>
+  
+      <script defer src="data/aviciiTimData.js"></script>
+  
+      <script defer src="data/importanceAlbums.js"></script>
+      <script defer src="data/importanceSongs.js"></script>
+      <script defer src="data/diversityAlbums.js"></script>
+      <script defer src="data/diversitySongs.js"></script>
+      <script defer src="data/dispersionAlbums.js"></script>
+      <script defer src="data/dispersionSongs.js"></script>
+  
+      <script defer src="utils.js"></script>
+      <script defer src="scrollama-importance.js"></script>
+      <script defer src="scrollama-diversity.js"></script>
+      <script defer src="scrollama-dispersion.js"></script>
+
+      <!-- Load (external) links here -->
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-      <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" rel="stylesheet" />
-      <link rel="stylesheet" href="style.css" />
+
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" />
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+      <link rel="stylesheet" href="style.css" />
   </head>
 
   <body>
-    <div id="header">
-        Go back to <a href="https://samborms.com/">samborms.com</a>
-        <a href="https://github.com/DataWanderers/lyrical-arctic-monkeys" target="_blank" class="fa fa-github" style="font-size:24px" id="github"></a>
-    </div>
+    <nav id="header">
+        <div>
+            Go back to <a href="https://samborms.com/">samborms.com</a>
+            <a href="https://github.com/DataWanderers/lyrical-arctic-monkeys" target="_blank" class="fa fa-github" style="font-size:24px" id="github"></a>
+        </div>
+    </nav>
     <main>
       <section class="generic" id="intro">
         <h1>
@@ -59,56 +85,15 @@
             The structure of a song is often divided into different sections, most commonly intro, verse, chorus, bridge, and outro.
             Each section has its own characteristics and importance.
             For example, the <b>chorus</b> is often the most important part of a song, as it contains the main message.
-            The <b>verse</b> tells the story, and the <b>bridge</b> is a transition between the verse and chorus.
+            The <b>verse</b> guides you through the story, and the <b>bridge</b> is a transition between the verse and chorus.
             The <b>intro</b> and <b>outro</b> are the beginning and end of a song.
             Songs can also have standalone <b>instrumental</b> sections.
         </p>
       </section>
 
-      <!-- <section id="scrolly">
-          
+      <section id="scrolly-importance">
         <figure>
-          <div class="viz" id="main_viz"></div>
-        </figure>
-
-        <article>
-
-        </article>        
-      </section> -->
-
-      <section class="generic">
-        <h2 class="title">How lyrically varied are Alex Turner's texts really</h2>
-        <p>
-            To measure the lyrical variation of a song, a useful metric is the so-called <b>lexical diversity</b>.
-            This metric is the ratio of the number of unique words versus the total number of words in a song.
-            In other <i>words</i>, the higher this value, the more unique a song can be considered.
-        </p>
-      </section>
-
-      <!-- <section id="scrolly">
-          
-        <figure>
-          <div class="viz" id="main_viz"></div>
-        </figure>
-
-        <article>
-
-        </article>        
-      </section> -->
-
-      <section class="generic">
-        <h2 class="title">The beat of romantic words</h2>
-        <p>
-            <b>Lexical dispersion</b> shows when and how often words occur in a song.
-            You can think of it as a timeline of the words in a song.
-            The graphs below will take you through that timeline for a couple of common romantic words.
-        </p>
-    </section>
-
-      <section id="scrolly">
-          
-        <figure>
-          <div class="viz" id="main_viz"></div>
+          <div class="viz" id="viz-importance"></div>
         </figure>
 
         <article>
@@ -199,7 +184,104 @@
                 </p>
             </div>
         </article>
-          
+      </section>
+
+      <section class="generic">
+        <h2 class="title">How lyrically varied are Alex Turner's texts really</h2>
+        <p>
+            To measure the lyrical variation of a song, a useful metric is the so-called <b>lexical diversity</b>.
+            This metric is the ratio of the number of unique words versus the total number of words in a song.
+            In other <i>words</i>, the higher this value, the more unique a song can be considered.
+        </p>
+      </section>
+
+      <section id="scrolly-diversity">
+        <figure>
+          <div class="viz" id="viz-diversity"></div>
+        </figure>
+
+        <article>
+            <div class="step" data-step="1">
+                <h2>The Album</h2>
+                <p>
+                    The story starts with a music album.
+                    In this case, it's Avicii's posthumous album TIM. 
+                    Each dot represents a song. 
+                    Hover over a dot to check the song titles.
+                </p>
+            </div>
+            
+            <div class="step" data-step="2">
+                <h2>Sentiment</h2>
+                <p>
+                    Using sentiment analysis,
+                    I turn the lyrics of a song into a data point with a sentiment score.
+                    The values range from -1.0 to +1.0 and give each song a
+                    <span class="label red">negative value</span>, 
+                    <span class="label">neutral value</span>, or 
+                    <span class="label green">positive value</span>.
+                </p>
+            </div>
+            
+            <div class="step" data-step="2">
+                <h2>Magnitude</h2>
+                <p>
+                    Besides a sentiment score, the analysis returns a magnitude value.
+                    This tells something about the way the sentiment is expressed in a song.
+                    Is it weak or strong?
+                    The magnitude defines the size of a dot.
+                </p>
+            </div>
+        </article>
+      </section>
+
+      <section class="generic">
+        <h2 class="title">The beat of romantic words</h2>
+        <p>
+            <b>Lexical dispersion</b> shows when and how often words occur in a song.
+            You can think of it as a timeline of the words in a song.
+            The graphs below will take you through that timeline for a couple of common romantic words.
+        </p>
+    </section>
+
+      <section id="scrolly-dispersion">
+        <figure>
+          <div class="viz" id="viz-dispersion"></div>
+        </figure>
+
+        <article>
+            <div class="step" data-step="1">
+                <h2>The Album</h2>
+                <p>
+                    The story starts with a music album.
+                    In this case, it's Avicii's posthumous album TIM. 
+                    Each dot represents a song. 
+                    Hover over a dot to check the song titles.
+                </p>
+            </div>
+            
+            <div class="step" data-step="2">
+                <h2>Sentiment</h2>
+                <p>
+                    Using sentiment analysis,
+                    I turn the lyrics of a song into a data point with a sentiment score.
+                    The values range from -1.0 to +1.0 and give each song a
+                    <span class="label red">negative value</span>, 
+                    <span class="label">neutral value</span>, or 
+                    <span class="label green">positive value</span>.
+                </p>
+            </div>
+            
+            <div class="step" data-step="2">
+                <h2>Magnitude</h2>
+                <p>
+                    Besides a sentiment score, the analysis returns a magnitude value.
+                    This tells something about the way the sentiment is expressed in a song.
+                    Is it weak or strong?
+                    The magnitude defines the size of a dot.
+                </p>
+            </div>
+        </article>
       </section>
 
       <section class="generic" id="outro">
@@ -210,27 +292,9 @@
         </p>
         <p>
             If you like this, I would love to share my enthusiasm about the Arctic Monkeys, music, and data analysis with you.
-            You can contact me through my <a href="http://www.samborms.com/" target="_blank">website</a>. 
+            You can find contact details on my <a href="http://www.samborms.com/" target="_blank">website</a>. 
         </p>    
     </section>
     </main>
-
-<!-- <div class='debug'></div> -->
-    <script src="src/d3.5.9.1.min.js"></script>
-    <script src="src/intersection-observer.js"></script>
-    <script src="src/stickyfill.min.js"></script>
-    <script src="src/scrollama.min.js"></script>
-
-    <script src="data/aviciiTimData.js"></script>
-
-    <script src="data/importanceAlbums.js"></script>
-    <script src="data/importanceSongs.js"></script>
-    <script src="data/diversityAlbums.js"></script>
-    <script src="data/diversitySongs.js"></script>
-    <script src="data/dispersionAlbums.js"></script>
-    <script src="data/dispersionSongs.js"></script>
-
-    <script src="d3-animations.js"></script>
-    <script src="scrollama-settings.js"></script>
   </body>
 </html>

@@ -1,15 +1,9 @@
-// set the dimensions and margins of the graph
+var main = d3.select("main");
+
+// set the dimensions and margins of all graphs
 const margin = {top: 50, right: 25, bottom: 45, left: 50},
       width = 700 - margin.left - margin.right,
       height = 420 - margin.top - margin.bottom;
-
-// append the svg object to the body of the page
-const svg = d3.select("#main_viz")
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform", `translate(${margin.left},${margin.top})`);
 
 // set colours for plot
 const color_mapping = {
@@ -18,39 +12,24 @@ const color_mapping = {
     green: "#00C184"
 }
 
-// add X axis
-const x = d3.scaleLinear()
-    .domain([0, 13])
-    .range([0, width]);
-              
-svg.append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .attr("class", "Xaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisBottom(x));
+function showTooltip(d, tooltip, toolTipState) {
+    tooltip
+        .transition()
+        .duration(200)
+    tooltip
+        .style("opacity", 1)
+        .html(returnTooltipText(toolTipState, d))
+}
 
-// add Y axis
-const y = d3.scaleLinear()
-    .domain([0, 2])
-    .range([height, 0]);
+function hideTooltip(d, tooltip) {
+    tooltip
+        .transition()
+        .duration(200)
+        .style("opacity", 0)
+}
 
-svg.append("g")
-    .attr("class", "Yaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisLeft(y));
-
-// add a scale for bubble size
-const z = d3.scaleLinear()
-    .domain([0, 1])
-    .range([1, 4]);
-              
-var tooltip = d3.select("#main_viz")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-
-// change tooltip text based on position in story
 function returnTooltipText(step, d) {
+    // change tooltip text based on position in story
     switch (step) {
         case "title":
             return d.index + ": " + d.title
@@ -63,48 +42,8 @@ function returnTooltipText(step, d) {
                 " - magnitude: " + d.magnitude
     }
 }
-              
-// create two functions to show and hide the tooltip
-var showTooltip = function(d) {
-    tooltip
-        .transition()
-        .duration(200)
-    tooltip
-        .style("opacity", 1)
-        .html(returnTooltipText(toolTipState, d))
-}
 
-var hideTooltip = function(d) {
-    tooltip
-        .transition()
-        .duration(200)
-        .style("opacity", 0)
-}
-
-// add bubble chart
-const bubbleChart = svg.append("g")
-    .attr("class", "chart")
-    .selectAll("dot")
-    .data(data)
-        .join("circle")
-            .attr("class", "bubbles")
-            .attr("cx", d => x(d.index))
-            .attr("cy", d => y(1))
-            .attr("r", 10)
-            .style("fill", "#F2E8DC")
-            .attr("stroke", "white")
-        .on("mouseover", showTooltip)
-        .on("mouseleave", hideTooltip)      
-              
-let bubbleRadius = "pop"
-var xAxis = d3.axisBottom().scale(x);
-var yAxis = d3.axisLeft().scale(y);
-
-//*
-// various functions to update chart elements
-//*
-
-function dotColorGrey() {
+function dotColorGrey(bubbleChart, data) {
     bubbleChart
         .data(data)
         .transition()
@@ -113,7 +52,7 @@ function dotColorGrey() {
                 .style("fill", "#F2E8DC")
 }
 
-function dotColorSentiment() {
+function dotColorSentiment(bubbleChart, data) {
     bubbleChart               
         .data(data)
         .transition()
@@ -130,7 +69,7 @@ function dotColorSentiment() {
     })
 }
 
-function dotResize() {
+function dotResize(svg, x, xAxis, y, yAxis, bubbleChart, data) {
     x.domain([0, 13]);
     
     svg.selectAll(".Xaxis")
@@ -154,7 +93,7 @@ function dotResize() {
             .attr("r", d => (d.magnitude*2.7));
 }
 
-function dotPositionScore() {
+function dotPositionScore(svg, x, xAxis, y, yAxis, bubbleChart, data) {
     x.domain([-.8, .8]);
     
     svg.selectAll(".Xaxis")
@@ -179,7 +118,7 @@ function dotPositionScore() {
             .attr("cy", d => y(1))
 }
 
-function dotPositionMagnitude() {
+function dotPositionMagnitude(svg, y, yAxis, bubbleChart, data) {
     y.domain([1, d3.max(data, function(d) { return d.magnitude + 1 })]);
     
     svg.selectAll(".Yaxis")
@@ -205,7 +144,7 @@ function dotPositionMagnitude() {
             .attr("cy", d => y(d.magnitude))
 }
 
-function dotSimplify() {
+function dotSimplify(bubbleChart, data) {
     bubbleChart
         .data(data)
         .transition()
@@ -214,7 +153,7 @@ function dotSimplify() {
             .attr("r", 5)
 }
 
-function toggleAxesOpacity(toggleX, toggleY, opacity) {
+function toggleAxesOpacity(svg, toggleX, toggleY, opacity) {
     if (toggleX) {
         svg.selectAll(".Xaxis")
             .transition()
@@ -230,7 +169,7 @@ function toggleAxesOpacity(toggleX, toggleY, opacity) {
     }
 }
 
-function drawStraightPath() {
+function drawStraightPath(x, y) {
     if (typeof line === "undefined") {
         var path = d3.path();
                           
@@ -278,12 +217,12 @@ function toggleElementOpacity(element, opacity) {
             .style("opacity", opacity)
 }
 
-function drawBezierPath() {
+function drawBezierPath(x, y, data) {
     if (typeof lineBezier === "undefined") {
         var pathBezier = d3.path();
 
-        for (var item = 0; item < bezierData.length; item++) {
-            let currenItem = bezierData[item];
+        for (var item = 0; item < data.length; item++) {
+            let currenItem = data[item];
 
             if (item === 0) {
                 pathBezier.moveTo(x(currenItem[0]), y(currenItem[1]));
@@ -298,7 +237,7 @@ function drawBezierPath() {
                 y(currenItem[7]),
             );
 
-        }  
+        }
         
         window.lineBezier = d3.select(".chart")
             .append("path")
@@ -326,4 +265,27 @@ function hideBezierPath() {
         .duration(3000)
             .attr("stroke-dasharray", totalLengthBezier + " " + totalLengthBezier)
             .attr("stroke-dashoffset", totalLengthBezier)
+}
+
+function handleResize(scroller, figure, step) {  // generic window resize listener event
+    // update height of step elements
+    var stepH = Math.floor(window.innerHeight * 0.75);
+    step.style("height", stepH + "px");
+    step.style("width", "250px")
+
+    var figureHeight = window.innerHeight / 2;
+    var figureMarginTop = (window.innerHeight - figureHeight) / 2;
+    
+    figure
+        .style("height", figureHeight + "px")
+        .style("top", figureMarginTop + "px");
+
+    // tell scrollama to update new element dimensions
+    scroller.resize();
+}
+
+function setupStickyfill() {
+    d3.selectAll(".sticky").each(function() {
+        Stickyfill.add(this);
+    });
 }

@@ -49,6 +49,7 @@ def prepare_columns(df, dict_to_rename={}):
 
 def save_to_js(dir, var_name, df):
     """Saves a Python dictionary to a JavaScript file."""
+    # alternative: save as JSON file and use const var = require("var.json")
     with open(f"{dir}/{var_name}.js", "w") as file:
         file.write(f"const {var_name} = ")
         file.write(df.to_json(orient="records"))
