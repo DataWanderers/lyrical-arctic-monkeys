@@ -82,10 +82,17 @@ figure {
     z-index: 10;
 }
 
-#viz-importance, #viz-diversity, #viz-dispersion {
-    background-color: #0c8379;
+.viz {
     width: 750px;
     float: right;
+}
+
+#viz-importance {
+    background-color: #0c8379;
+}
+
+#viz-diversity, #viz-dispersion {
+    opacity: 1;
 }
 
 .step {
@@ -156,14 +163,23 @@ p span.label {
 }
 
 .red {
-    color: #A6055D;
+    color: red;
 }
 
 .grey {
     color: #777;
 }
+
 .green {
     color: #00C184;
+}
+
+.orange {
+    color: orange;
+}
+
+.blue {
+    color: blue;
 }
 
 .tooltip {

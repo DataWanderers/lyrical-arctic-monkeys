@@ -2,59 +2,72 @@
 /******* d3           */
 /**********************/ 
 
-// append the svg object to the body of the page
+const albums = dispersionAlbums.map(d => d.Album);
+const words = Object.keys(dispersionAlbums[0]).filter(word => word !== "Album");
+const colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, 10]); // light pink --> dark red; d3.max(dispersionAlbums, d => d3.max(words, w => d[w]))
+const rectangle_width = 80, rectangle_height = 35;
+
+// define svg
 const svg_dispersion = d3.select("#viz-dispersion")
     .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-var tooltip_dispersion = d3.select("#viz-dispersion")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
+svg_dispersion.selectAll("rect")
+    .data(dispersionAlbums)
+    .enter()
+    .append("g")
+    .selectAll("rect")
+    .data(d => words.map(w => ({ album: d.Album, word: w, count: d[w] })))
+    .enter()
+    .append("rect")
+    .attr("x", (d, i) => albums.indexOf(d.album) * rectangle_width)
+    .attr("y", (d, i) => i * rectangle_height)
+    .attr("width", rectangle_width)
+    .attr("height", rectangle_height)
+    .style("fill", d => colorScale(d.count));
 
-// add X axis
-const x_dispersion = d3.scaleLinear()
-    .domain([0, 13])
-    .range([0, width]);
-              
+// create labels inside each rectangle
+svg_dispersion.selectAll("text")
+    .data(dispersionAlbums)
+    .enter()
+    .append("g")
+    .selectAll("text")
+    .data(d => words.map(w => ({ album: d.Album, word: w, count: d[w] })))
+    .enter()
+    .append("text")
+    .text(d => d.count) // show the count inside the rectangle
+    .attr("x", (d, i) => albums.indexOf(d.album) * rectangle_width + rectangle_width / 2)
+    .attr("y", (d, i) => i * rectangle_height + rectangle_height / 2)
+    .style("text-anchor", "middle")
+    .style("alignment-baseline", "middle")
+    .style("font-size", "14px")
+    .style("font-weight", "600");
+
+// add labels for albums and words
 svg_dispersion.append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .attr("class", "Xaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisBottom(x_dispersion));
-
-// add Y axis
-const y_dispersion = d3.scaleLinear()
-    .domain([0, 2])
-    .range([height, 0]);
+    .selectAll("text")
+    .data(albums)
+    .enter()
+    .append("text")
+    .text(d => d)
+    .attr("x", (d, i) => i * rectangle_width + rectangle_width / 2)
+    .attr("y", -10)
+    .style("text-anchor", "middle")
+    .style("font-size", "12px");
 
 svg_dispersion.append("g")
-    .attr("class", "Yaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisLeft(y_dispersion));
-
-// define helper variables
-var xAxis_dispersion = d3.axisBottom().scale(x_dispersion);
-var yAxis_dispersion = d3.axisLeft().scale(y_dispersion);
-var toolTipState_dispersion = "title";
-
-// add bubble chart
-const bubbleChart_dispersion = svg_dispersion.append("g")
-    .attr("class", "chart")
-    .selectAll("dot")
-    .data(data)
-        .join("circle")
-            .attr("class", "bubbles")
-            .attr("cx", d => x_dispersion(d.index))
-            .attr("cy", d => y_dispersion(1))
-            .attr("r", 10)
-            .style("fill", "#F2E8DC")
-            .attr("stroke", "white")
-            .on("mouseover", function(d) {showTooltip(d, tooltip_dispersion, toolTipState_dispersion);})
-            .on("mouseleave", function(d) {hideTooltip(d, tooltip_dispersion);})
+    .selectAll("text")
+    .data(words)
+    .enter()
+    .append("text")
+    .text(d => d)
+    .attr("x", -10)
+    .attr("y", (d, i) => i * rectangle_height + rectangle_height / 2)
+    .style("text-anchor", "end")
+    .style("alignment-baseline", "middle");
 
 /**********************/
 /******* scrollama    */
@@ -78,17 +91,14 @@ function handleStepEnter(response) {
     // update graphic based on step
     switch(currentIndex) {
         case 0:
-            toolTipState_dispersion = "title";
             if (currentDirection === "up") {
                 dotColorGrey(bubbleChart_dispersion, data);
             }
             break;
         case 1:
-            toolTipState_dispersion = "title score";
             dotColorSentiment(bubbleChart_dispersion, data)
             break;
         case 2:
-            toolTipState_dispersion = "title score magnitude";
             dotResize(svg_dispersion, x_dispersion, xAxis_dispersion, y_dispersion, yAxis_dispersion, bubbleChart_dispersion, data)
             if (currentDirection === "up") {
                 toggleAxesOpacity(svg_dispersion, true, false, 0)

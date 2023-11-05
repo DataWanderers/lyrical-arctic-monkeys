@@ -5,57 +5,68 @@
 // append the svg object to the body of the page
 const svg_diversity = d3.select("#viz-diversity")
     .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-var tooltip_diversity = d3.select("#viz-diversity")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
-
-// add X axis
-const x_diversity = d3.scaleLinear()
-    .domain([0, 13])
+// create scales for x and y axes
+const xScale_diversity = d3.scaleLinear()
+    .domain([0, d3.max(diversityAlbums, d => d.Maximum)]).nice()
     .range([0, width]);
-              
+
+const yScale_diversity = d3.scaleBand()
+    .domain(diversityAlbums.map(d => d.Album))
+    .range([0, height])
+    .padding(0.3);
+
+// define colors
+const colorScale_diversity = d3.scaleOrdinal()
+    .domain(["Minimum", "Median", "Maximum"])
+    .range(["blue", "orange", "red"]);
+
+// add axes
+svg_diversity.append("g")
+    .call(d3.axisLeft(yScale_diversity))
+    .style("font-size", "12px");
+
 svg_diversity.append("g")
     .attr("transform", `translate(0, ${height})`)
-    .attr("class", "Xaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisBottom(x_diversity));
+    .call(d3.axisBottom(xScale_diversity));
 
-// add Y axis
-const y_diversity = d3.scaleLinear()
-    .domain([0, 2])
-    .range([height, 0]);
+// add x-axis label
+svg_diversity.append("text")
+    .attr("x", width / 2)
+    .attr("y", height + margin.bottom - 5)
+    .style("text-anchor", "middle")
+    .text("Lexical diversity (%)");
 
 svg_diversity.append("g")
-    .attr("class", "Yaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisLeft(y_diversity));
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(xScale_diversity));
 
+// create dots for Minimum, Median, and Maximum values
+const dotRadius = 5;
+diversityAlbums.forEach(d => {
+    // Add connecting line between Minimum and Maximum first
+    svg_diversity.append("line")
+        .attr("x1", xScale_diversity(d.Minimum))
+        .attr("x2", xScale_diversity(d.Maximum))
+        .attr("y1", yScale_diversity(d.Album) + yScale_diversity.bandwidth() / 2)
+        .attr("y2", yScale_diversity(d.Album) + yScale_diversity.bandwidth() / 2)
+        .style("stroke", "black")
+        .style("stroke-width", 1);
 
-// define helper variables
-var xAxis_diversity = d3.axisBottom().scale(x_diversity);
-var yAxis_diversity = d3.axisLeft().scale(y_diversity);
-var toolTipState_diversity = "title";
-
-// add bubble chart
-const bubbleChart_diversity = svg_diversity.append("g")
-    .attr("class", "chart")
-    .selectAll("dot")
-    .data(data)
-        .join("circle")
-            .attr("class", "bubbles")
-            .attr("cx", d => x_diversity(d.index))
-            .attr("cy", d => y_diversity(1))
-            .attr("r", 10)
-            .style("fill", "#F2E8DC")
-            .attr("stroke", "white")
-            .on("mouseover", function(d) {showTooltip(d, tooltip_diversity, toolTipState_diversity);})
-            .on("mouseleave", function(d) {hideTooltip(d, tooltip_diversity);})   
+    keys = ["Minimum", "Median", "Maximum"];
+    keys.forEach(key => {
+        svg_diversity.append("circle")
+            .attr("class", key)
+            .attr("cx", xScale_diversity(d[key]))
+            .attr("cy", yScale_diversity(d.Album) + yScale_diversity.bandwidth() / 2)
+            .attr("r", dotRadius)
+            .style("fill", colorScale_diversity(key))
+    });
+});
 
 /**********************/
 /******* scrollama    */
@@ -79,17 +90,14 @@ function handleStepEnter(response) {
     // update graphic based on step
     switch(currentIndex) {
         case 0:
-            toolTipState_diversity = "title";
             if (currentDirection === "up") {
                 dotColorGrey(bubbleChart_diversity, data);
             }
             break;
         case 1:
-            toolTipState_diversity = "title score";
             dotColorSentiment(bubbleChart_diversity, data)
             break;
         case 2:
-            toolTipState_diversity = "title score magnitude";
             dotResize(svg_diversity, x_diversity, xAxis_diversity, y_diversity, yAxis_diversity, bubbleChart_diversity, data)
             if (currentDirection === "up") {
                 toggleAxesOpacity(svg_diversity, true, false, 0)

@@ -2,19 +2,21 @@
 <html>
 <head>
     <script src="https://d3js.org/d3.v6.min.js"></script>
-    <script src="data/diversityAlbums.js"></script>
+    <script src="data/dispersionAlbums.js"></script>
 </head>
 <body>
-<script>
-    // Your data
-    let data = diversityAlbums;
+<script>    
+    const albums = dispersionAlbums.map(d => d.Album);
+    const words = Object.keys(dispersionAlbums[0]).filter(word => word !== "Album");
 
-    // Set up the chart dimensions
-    const margin = { top: 20, right: 20, bottom: 40, left: 100 };
-    const width = 600 - margin.left - margin.right;
+    // Create a color scale from light pink to dark red
+    const colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, d3.max(dispersionAlbums, d => d3.max(words, w => d[w]))]);
+
+    // Create the SVG container
+    const margin = { top: 40, right: 40, bottom: 40, left: 80 };
+    const width = 800 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
-    // Create an SVG element for the main chart
     const svg = d3.select("body")
         .append("svg")
         .attr("width", width + margin.left + margin.right)
@@ -22,90 +24,55 @@
         .append("g")
         .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-    // Create an SVG element for the legend
-    const legendSvg = d3.select("body")
-        .append("svg")
-        .attr("width", 250)  // Adjust the width as needed
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-    // Create scales for x and y axes
-    const xScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.Maximum)]).nice()
-        .range([0, width]);
-
-    const yScale = d3.scaleBand()
-        .domain(data.map(d => d.Album))
-        .range([0, height])
-        .padding(0.3);
-
-    // Define colors for Minimum, Median, and Maximum
-    const colorScale = d3.scaleOrdinal()
-        .domain(["Minimum", "Median", "Maximum"])
-        .range(["blue", "orange", "red"]);
-
-    // Add y and x axes
-    svg.append("g")
-        .call(d3.axisLeft(yScale));
-
-    svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(xScale));
-
-    // Add x-axis label
-    svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", height + margin.bottom - 5) // Adjust the position as needed
-        .style("text-anchor", "middle")
-        .text("Lexical diversity (%)");
-
-    svg.append("g")
-        .attr("transform", `translate(0,${height})`)
-        .call(d3.axisBottom(xScale));
-
-    // Create dots for Minimum, Median, and Maximum values
-    const dotRadius = 5;
-    data.forEach(d => {
-        // Add connecting line between Minimum and Maximum first
-        svg.append("line")
-            .attr("x1", xScale(d.Minimum))
-            .attr("x2", xScale(d.Maximum))
-            .attr("y1", yScale(d.Album) + yScale.bandwidth() / 2)
-            .attr("y2", yScale(d.Album) + yScale.bandwidth() / 2)
-            .style("stroke", "black")
-            .style("stroke-width", 1);
-
-        keys = ["Minimum", "Median", "Maximum"];
-        keys.forEach(key => {
-            svg.append("circle")
-                .attr("class", key)
-                .attr("cx", xScale(d[key]))
-                .attr("cy", yScale(d.Album) + yScale.bandwidth() / 2)
-                .attr("r", dotRadius)
-                .style("fill", colorScale(key));
-        });
-    });
-
-    // Create legend items
-    const legend = legendSvg.selectAll(".legend")
-        .data(keys)
+    svg.selectAll("rect")
+        .data(dispersionAlbums)
         .enter()
         .append("g")
-        .attr("class", "legend")
-        .attr("transform", (d, i) => `translate(0,${i * 20})`);  // Adjust spacing
+        .selectAll("rect")
+        .data(d => words.map(w => ({ album: d.Album, word: w, count: d[w] })))
+        .enter()
+        .append("rect")
+        .attr("x", (d, i) => i * 40) // Adjust the spacing
+        .attr("y", (d, i) => albums.indexOf(d.album) * 40) // Albums on the y-axis
+        .attr("width", 40)
+        .attr("height", 40)
+        .style("fill", d => colorScale(d.count));
 
-    legend.append("rect")
-        .attr("x", 0)
-        .attr("width", 15)  // Width of the legend color box
-        .attr("height", 15)  // Height of the legend color box
-        .style("fill", d => colorScale(d));
+    // Create labels inside each rectangle
+    svg.selectAll("text")
+        .data(dispersionAlbums)
+        .enter()
+        .append("g")
+        .selectAll("text")
+        .data(d => words.map(w => ({ album: d.Album, word: w, count: d[w] })))
+        .enter()
+        .append("text")
+        .text(d => d.count) // Show the count inside the rectangle
+        .attr("x", (d, i) => i * 40 + 20) // Adjust the horizontal position
+        .attr("y", (d, i) => albums.indexOf(d.album) * 40 + 30) // Adjust the vertical position
+        .style("text-anchor", "middle")
+        .style("alignment-baseline", "middle");
 
-    legend.append("text")
-        .attr("x", 20)  // Spacing from the color box
-        .attr("y", 10)  // Center text vertically
-        .style("text-anchor", "start")
-        .text(d => d);
+    // Add labels for albums and words
+    svg.append("g")
+        .selectAll("text")
+        .data(albums)
+        .enter()
+        .append("text")
+        .text(d => d)
+        .attr("x", -10)
+        .attr("y", (d, i) => i * 40 + 20) // Adjust the vertical position
+        .style("text-anchor", "end");
+
+    svg.append("g")
+        .selectAll("text")
+        .data(words)
+        .enter()
+        .append("text")
+        .text(d => d)
+        .attr("x", (d, i) => i * 40 + 20) // Adjust the horizontal position
+        .attr("y", -10) // Adjust the vertical position
+        .style("text-anchor", "middle");
 </script>
 </body>
 </html>

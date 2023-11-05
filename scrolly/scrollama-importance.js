@@ -5,10 +5,10 @@
 // append the svg object to the body of the page
 const svg_importance = d3.select("#viz-importance")
     .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-            .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 var tooltip_importance = d3.select("#viz-importance")
     .append("div")
@@ -46,15 +46,15 @@ const bubbleChart_importance = svg_importance.append("g")
     .attr("class", "chart")
     .selectAll("dot")
     .data(data)
-        .join("circle")
-            .attr("class", "bubbles")
-            .attr("cx", d => x_importance(d.index))
-            .attr("cy", d => y_importance(1))
-            .attr("r", 10)
-            .style("fill", "#F2E8DC")
-            .attr("stroke", "white")
-        .on("mouseover", function(d) {showTooltip(d, tooltip_importance, toolTipStat_importance);})
-        .on("mouseleave", function(d) {hideTooltip(d, tooltip_importance);})
+    .join("circle")
+    .attr("class", "bubbles")
+    .attr("cx", d => x_importance(d.index))
+    .attr("cy", d => y_importance(1))
+    .attr("r", 10)
+    .style("fill", "#F2E8DC")
+    .attr("stroke", "white")
+    .on("mouseover", function(d) {showTooltip(d, tooltip_importance, toolTipStat_importance);})
+    .on("mouseleave", function(d) {hideTooltip(d, tooltip_importance);})
 
 /**********************/
 /******* scrollama    */
