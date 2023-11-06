@@ -66,7 +66,7 @@ var step_importance = scrolly_importance.select("article").selectAll(".step");
 var scroller_importance = scrollama();
 
 function handleStepEnter(response) {
-    console.log(response);  // response = { element, direction, index }
+    console.log(response);  // response = { element, index, direction }
     let currentIndex = response.index;
     let currentDirection = response.direction;
 
@@ -80,7 +80,7 @@ function handleStepEnter(response) {
         case 0:
             toolTipStat_importance = "title";
             if (currentDirection === "up") {
-                dotColorGrey(bubbleChart_importance, data);
+                dotColorGrey(bubbleChart_importance, data)
             }
             break;
         case 1:
@@ -97,15 +97,15 @@ function handleStepEnter(response) {
         case 3:
             dotPositionScore(svg_importance, x_importance, xAxis_importance, y_importance, yAxis_importance, bubbleChart_importance, data)
             if (currentDirection === "up") {
-                toggleAxesOpacity(svg_importance, true, false, 0)
+                toggleAxesOpacity(svg_importance, false, true, 0)
             }
             break;
         case 4:
             dotPositionMagnitude(svg_importance, y_importance, yAxis_importance, bubbleChart_importance, data)
             if (currentDirection === "up") {
-                toggleAxesOpacity(svg_importance, true, false, 0)
+                toggleAxesOpacity(svg_importance, true, true, 1)
             } else {
-                toggleAxesOpacity(svg_importance, true, false, 0)
+                toggleAxesOpacity(svg_importance, false, true, 1)
             }
             break;
         case 5:
@@ -113,7 +113,7 @@ function handleStepEnter(response) {
             if (currentDirection === "up") {
                 hideStraightPath()
             } else {
-                toggleAxesOpacity(svg_importance, true, false, 0)
+                toggleAxesOpacity(svg_importance, true, true, 0)
             }
             break;
         case 6:
@@ -129,7 +129,7 @@ function handleStepEnter(response) {
             if (currentDirection === "up") {
                 toggleElementOpacity(bubbleChart_importance, 1)
             } else {
-                drawBezierPath(x_importance, y_importance, bezierData);
+                drawBezierPath(x_importance, y_importance, bezierData)
             }
             break;
         case 8:

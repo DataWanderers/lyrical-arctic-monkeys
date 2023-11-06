@@ -5,74 +5,8 @@
     <script src="data/dispersionAlbums.js"></script>
 </head>
 <body>
-<script>    
-    const albums = dispersionAlbums.map(d => d.Album);
-    const words = Object.keys(dispersionAlbums[0]).filter(word => word !== "Album");
-
-    // Create a color scale from light pink to dark red
-    const colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, d3.max(dispersionAlbums, d => d3.max(words, w => d[w]))]);
-
-    // Create the SVG container
-    const margin = { top: 40, right: 40, bottom: 40, left: 80 };
-    const width = 800 - margin.left - margin.right;
-    const height = 400 - margin.top - margin.bottom;
-
-    const svg = d3.select("body")
-        .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-    svg.selectAll("rect")
-        .data(dispersionAlbums)
-        .enter()
-        .append("g")
-        .selectAll("rect")
-        .data(d => words.map(w => ({ album: d.Album, word: w, count: d[w] })))
-        .enter()
-        .append("rect")
-        .attr("x", (d, i) => i * 40) // Adjust the spacing
-        .attr("y", (d, i) => albums.indexOf(d.album) * 40) // Albums on the y-axis
-        .attr("width", 40)
-        .attr("height", 40)
-        .style("fill", d => colorScale(d.count));
-
-    // Create labels inside each rectangle
-    svg.selectAll("text")
-        .data(dispersionAlbums)
-        .enter()
-        .append("g")
-        .selectAll("text")
-        .data(d => words.map(w => ({ album: d.Album, word: w, count: d[w] })))
-        .enter()
-        .append("text")
-        .text(d => d.count) // Show the count inside the rectangle
-        .attr("x", (d, i) => i * 40 + 20) // Adjust the horizontal position
-        .attr("y", (d, i) => albums.indexOf(d.album) * 40 + 30) // Adjust the vertical position
-        .style("text-anchor", "middle")
-        .style("alignment-baseline", "middle");
-
-    // Add labels for albums and words
-    svg.append("g")
-        .selectAll("text")
-        .data(albums)
-        .enter()
-        .append("text")
-        .text(d => d)
-        .attr("x", -10)
-        .attr("y", (d, i) => i * 40 + 20) // Adjust the vertical position
-        .style("text-anchor", "end");
-
-    svg.append("g")
-        .selectAll("text")
-        .data(words)
-        .enter()
-        .append("text")
-        .text(d => d)
-        .attr("x", (d, i) => i * 40 + 20) // Adjust the horizontal position
-        .attr("y", -10) // Adjust the vertical position
-        .style("text-anchor", "middle");
+<script>
+    
 </script>
 </body>
 </html>

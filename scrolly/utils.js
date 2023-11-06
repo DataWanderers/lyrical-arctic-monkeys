@@ -101,8 +101,7 @@ function dotPositionScore(svg, x, xAxis, y, yAxis, bubbleChart, data) {
         .duration(1000)
         .style("opacity", 1)
         .call(xAxis);
-                          
-    
+
     y.domain([0, 2]);
     
     svg.selectAll(".Yaxis")

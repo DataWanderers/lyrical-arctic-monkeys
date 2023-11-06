@@ -4,7 +4,7 @@
 
 const albums = dispersionAlbums.map(d => d.Album);
 const words = Object.keys(dispersionAlbums[0]).filter(word => word !== "Album");
-const colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, 10]); // light pink --> dark red; d3.max(dispersionAlbums, d => d3.max(words, w => d[w]))
+const colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, 10]);  // light pink --> dark red; d3.max(dispersionAlbums, d => d3.max(words, w => d[w]))
 const rectangle_width = 80, rectangle_height = 35;
 
 // define svg
@@ -79,7 +79,7 @@ var step_dispersion = scrolly_dispersion.select("article").selectAll(".step");
 var scroller_dispersion = scrollama();
 
 function handleStepEnter(response) {
-    console.log(response);  // response = { element, direction, index }
+    console.log(response);  // response = { element, index, direction }
     let currentIndex = response.index;
     let currentDirection = response.direction;
 
@@ -92,7 +92,7 @@ function handleStepEnter(response) {
     switch(currentIndex) {
         case 0:
             if (currentDirection === "up") {
-                dotColorGrey(bubbleChart_dispersion, data);
+                dotColorGrey(bubbleChart_dispersion, data)
             }
             break;
         case 1:
