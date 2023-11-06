@@ -143,11 +143,6 @@ function toggleElementsVisibility(chart, show, albumsToShow) {
         .style("opacity", show ? 1.0 : 0.2);
 }
 
-function toggleChart(chart1, chart2) {  // chart1 is on, chart2 is off
-    chart1.style("display", "block");
-    chart2.style("display", "none");
-}
-
 /**********************/
 /******* scrollama    */
 /**********************/
@@ -158,7 +153,7 @@ var step_diversity = scrolly_diversity.select("article").selectAll(".step");
 var scroller_diversity = scrollama();
 
 // initialize chart
-makeChartDiversityAlbums(chartDiversity)
+makeChartDiversityAlbums()
 
 function handleStepEnter(response) {
     console.log(response);  // response = { element, index, direction }

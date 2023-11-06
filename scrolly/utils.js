@@ -12,6 +12,11 @@ const color_mapping = {
     green: "#00C184"
 }
 
+function toggleChart(chart1, chart2) {  // chart1 is on, chart2 is off
+    chart1.style("display", "block");
+    chart2.style("display", "none");
+}
+
 function showTooltip(d, tooltip, toolTipState) {
     tooltip
         .transition()
