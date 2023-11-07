@@ -22,6 +22,7 @@
       <script defer src="data/dispersionSongs.js"></script>
   
       <script defer src="utils.js"></script>
+      <script defer src="intro-albums.js"></script>
       <script defer src="scrollama-importance.js"></script>
       <script defer src="scrollama-diversity.js"></script>
       <script defer src="scrollama-dispersion.js"></script>
@@ -73,7 +74,32 @@
         </p>
         <p>
             Over the years, they have released seven studio albums, which showcased their evolving musical style.
-            Let's put exactly this to the test of data analysis and visualization!
+            Click around to discover the band's albums discography.
+        </p>
+
+        <h3>Albums discography</h3>
+        <div id="discography">
+            <div id="album-buttons">
+                <button class="styled-button" id="album1">WPSIATWIN</button>
+                <button class="styled-button" id="album2">Favourite WN</button>
+                <button class="styled-button" id="album3">Humbug</button>
+                <button class="styled-button" id="album4">Suck It and See</button>
+                <button class="styled-button" id="album5">AM</button>
+                <button class="styled-button" id="album6">TBH & Casino</button>
+                <button class="styled-button" id="album7">The Car</button>
+            </div>
+            <h2 id="album-title"></h2>
+            <div id="album-info" class="hidden">
+                <img id="album-cover" alt="Album cover">
+                <div id="description">
+                    <p id="album-description"></p>
+                    <h4><strong>Bangers 🎙️</strong></h4>
+                    <p id="song-list"></p>
+                </div>
+            </div>
+        </div>
+        <p>
+            Let's now subject Arctic Monkey's said evolving musical style to the test of data analysis and visualization!
         </p>
       </section>
 
