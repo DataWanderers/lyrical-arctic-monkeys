@@ -87,11 +87,7 @@ figure {
     float: right;
 }
 
-#viz-importance {
-    background-color: #0c8379;
-}
-
-#viz-diversity, #viz-dispersion {
+#viz-importance, #viz-diversity, #viz-dispersion {
     opacity: 1;
 }
 

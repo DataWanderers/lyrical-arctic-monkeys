@@ -2,59 +2,143 @@
 /******* d3           */
 /**********************/ 
 
-// append the svg object to the body of the page
+const songSections = Object.keys(importanceAlbums[0]).filter(key => key !== "Album");
+
 const svg_importance = d3.select("#viz-importance")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
     .append("g")
-    .attr("transform", `translate(${margin.left}, ${margin.top})`);
+    .attr("transform", `translate(0, ${margin.right})`);
 
-var tooltip_importance = d3.select("#viz-importance")
-    .append("div")
-    .style("opacity", 0)
-    .attr("class", "tooltip")
+const chartImportance = svg_importance.append("g").attr("class", "chart");
 
-// add X axis
-const x_importance = d3.scaleLinear()
-    .domain([0, 13])
-    .range([0, width]);
+function makeChartImportanceAlbums() {
+    const x = d3.scaleBand()
+        .domain(importanceAlbums.map(d => d.Album))
+        .range([0, width + margin.left])
+        .padding(0.3);
+    
+    chartImportance.append("g")
+        .attr("transform", `translate(0, ${height + 2})`)
+        .call(d3.axisBottom(x))
+        .style("font-size", "12px")
+        .style("text-anchor", "middle")
+        .select(".domain")
+        .remove();
 
-svg_importance.append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .attr("class", "Xaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisBottom(x_importance));
+    const y = d3.scaleLinear()
+        .domain([0, 100])
+        .range([height, 0])
+    
+    const color = d3.scaleOrdinal()
+        .domain(songSections)
+        .range(d3.schemeDark2);
+    
+    const stackedData = d3.stack()
+        .offset(d3.stackOffsetNone)
+        .keys(songSections)
+        (importanceAlbums)
+    
+    var Tooltip = chartImportance.append("text")
+        .attr("x", 50)
+        .attr("y", -10)
+        .style("opacity", 0)
+        .style("font-size", 15)
+    
+    var mouseover = function(d) {
+        Tooltip.style("opacity", 1)
+        d3.selectAll(".myArea").style("opacity", .2)
+        d3.select(this).style("stroke", "black").style("opacity", 1)
+    }
+    
+    var mousemove = function(d, i) {
+        Tooltip.text(songSections[i])
+    }
+    
+    var mouseleave = function(d) {
+        Tooltip.style("opacity", 0)
+        d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+    }
+    
+    var area = d3.area()
+        .x(function(d) { return x(d.data.Album) + x.bandwidth() / 2; })
+        .y0(function(d) { return y(d[0]); })
+        .y1(function(d) { return y(d[1]); })
 
-// add Y axis
-const y_importance = d3.scaleLinear()
-    .domain([0, 2])
-    .range([height, 0]);
+    chartImportance.selectAll("mylayers")
+        .data(stackedData)
+        .enter()
+        .append("path")
+        .attr("class", "myArea")
+        .style("fill", function(d) { return color(d.key); })
+        .attr("d", area)
+        .on("mouseover", mouseover)
+        .on("mousemove", mousemove)
+        .on("mouseleave", mouseleave)
+    
+    // const xScale = d3.scaleBand()
+    //     .domain(songSections)
+    //     .range([0, width])
+    //     .padding(0.1);
 
-svg_importance.append("g")
-    .attr("class", "Yaxis axis")
-    .style("opacity", 0)
-    .call(d3.axisLeft(y_importance));
+    // const yScale = d3.scaleBand()
+    //     .domain(importanceAlbums.map(d => d.Album))
+    //     .range([0, height]);
 
-// define helper variables
-var xAxis_importance = d3.axisBottom().scale(x_importance);
-var yAxis_importance = d3.axisLeft().scale(y_importance);
-var toolTipStat_importance = "title";
+    // const colorScale = d3.scaleSequential(d3.interpolateBlues)
+    //     .domain([0, d3.max(importanceAlbums, d => d3.max(songSections, s => d[s]))]);
 
-// add bubble chart
-const bubbleChart_importance = svg_importance.append("g")
-    .attr("class", "chart")
-    .selectAll("dot")
-    .data(data)
-    .join("circle")
-    .attr("class", "bubbles")
-    .attr("cx", d => x_importance(d.index))
-    .attr("cy", d => y_importance(1))
-    .attr("r", 10)
-    .style("fill", "#F2E8DC")
-    .attr("stroke", "white")
-    .on("mouseover", function(d) {showTooltip(d, tooltip_importance, toolTipStat_importance);})
-    .on("mouseleave", function(d) {hideTooltip(d, tooltip_importance);})
+    // chartImportance.selectAll(".bar")
+    //     .data(importanceAlbums)
+    //     .enter()
+    //     .append("g")
+    //     .attr("class", "album")
+    //     .attr("transform", d => `translate(0, ${yScale(d.Album)})`)
+    //     .selectAll(".bar")
+    //     .data(d => songSections.map(s => ({ section: s, value: d[s] })))
+    //     .enter()
+    //     .append("rect")
+    //     .attr("class", "bar")
+    //     .attr("x", d => xScale(d.section))
+    //     .attr("y", 0)
+    //     .attr("width", xScale.bandwidth())
+    //     .attr("height", yScale.bandwidth())
+    //     .style("fill", d => colorScale(d.value));
+
+    // chartImportance.selectAll(".section-label")
+    //     .data(songSections)
+    //     .enter()
+    //     .append("text")
+    //     .attr("class", "section-label")
+    //     .text(d => d)
+    //     .attr("x", d => xScale(d) + xScale.bandwidth() / 2)
+    //     .attr("y", height + 20)
+    //     .style("text-anchor", "middle");
+
+    // chartImportance.selectAll(".album-label")
+    //     .data(importanceAlbums)
+    //     .enter()
+    //     .append("text")
+    //     .attr("class", "album-label")
+    //     .text(d => d.Album)
+    //     .attr("x", -10)
+    //     .attr("y", d => yScale(d.Album) + yScale.bandwidth() / 2)
+    //     .style("font-size", "12px")
+    //     .style("text-anchor", "end")
+    //     .style("alignment-baseline", "middle");
+}
+
+const chartImportanceLine = svg_importance.append("g").attr("class", "chart");
+
+function makeLineChartImportance() {
+}
+
+const chartImportanceSongs = svg_importance.append("g").attr("class", "chart");
+
+function makeChartImportanceSongs() {
+
+}
 
 /**********************/
 /******* scrollama    */
@@ -65,78 +149,32 @@ var figure_importance = scrolly_importance.select("figure");
 var step_importance = scrolly_importance.select("article").selectAll(".step");
 var scroller_importance = scrollama();
 
+// initialize chart
+makeChartImportanceAlbums()
+
 function handleStepEnter(response) {
     console.log(response);  // response = { element, index, direction }
     let currentIndex = response.index;
-    let currentDirection = response.direction;
 
     // add color to current step only
     step_importance.classed("is-active", function(d, i) {
         return i === currentIndex;
     });
 
-    // update graphic based on step
+    // update graph based on step
     switch(currentIndex) {
         case 0:
-            toolTipStat_importance = "title";
-            if (currentDirection === "up") {
-                dotColorGrey(bubbleChart_importance, data)
-            }
             break;
         case 1:
-            toolTipStat_importance = "title score";
-            dotColorSentiment(bubbleChart_importance, data)
             break;
         case 2:
-            toolTipStat_importance = "title score magnitude";
-            dotResize(svg_importance, x_importance, xAxis_importance, y_importance, yAxis_importance, bubbleChart_importance, data)
-            if (currentDirection === "up") {
-                toggleAxesOpacity(svg_importance, true, false, 0)
-            }
             break;
         case 3:
-            dotPositionScore(svg_importance, x_importance, xAxis_importance, y_importance, yAxis_importance, bubbleChart_importance, data)
-            if (currentDirection === "up") {
-                toggleAxesOpacity(svg_importance, false, true, 0)
-            }
             break;
         case 4:
-            dotPositionMagnitude(svg_importance, y_importance, yAxis_importance, bubbleChart_importance, data)
-            if (currentDirection === "up") {
-                toggleAxesOpacity(svg_importance, true, true, 1)
-            } else {
-                toggleAxesOpacity(svg_importance, false, true, 1)
-            }
             break;
         case 5:
-            dotSimplify(bubbleChart_importance, data)
-            if (currentDirection === "up") {
-                hideStraightPath()
-            } else {
-                toggleAxesOpacity(svg_importance, true, true, 0)
-            }
             break;
-        case 6:
-            if (currentDirection === "up") {
-                hideBezierPath()
-                toggleElementOpacity(line, 1)
-            } else {
-                drawStraightPath(x_importance, y_importance)
-            }
-            break;
-        case 7:
-            toggleElementOpacity(line, 0.25)
-            if (currentDirection === "up") {
-                toggleElementOpacity(bubbleChart_importance, 1)
-            } else {
-                drawBezierPath(x_importance, y_importance, bezierData)
-            }
-            break;
-        case 8:
-            if (currentDirection === "down") {
-                toggleElementOpacity(line, 0)
-                toggleElementOpacity(bubbleChart_importance, 0)
-            }
         default:
             break;
     }

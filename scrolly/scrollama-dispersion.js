@@ -163,6 +163,7 @@ var scroller_dispersion = scrollama();
 // initialize charts
 makeChartDispersionAlbums()
 makeChartDispersionSongs()
+toggleChart(chartDispersionAlbums, chartDispersionSongs)
 
 function handleStepEnter(response) {
     console.log(response);  // response = { element, index, direction }
@@ -173,7 +174,7 @@ function handleStepEnter(response) {
         return i === currentIndex;
     });
 
-    // update graphic based on step
+    // update graph based on step
     switch(currentIndex) {
         case 0:
             toggleChart(chartDispersionAlbums, chartDispersionSongs)

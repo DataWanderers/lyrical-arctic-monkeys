@@ -54,9 +54,7 @@ function makeChartDiversityAlbums() {
             .attr("y2", y(d.Album) + y.bandwidth() / 2)
             .style("stroke", "black")
             .style("stroke-width", 1)
-            .style("display", "block")
-            .transition()
-            .duration(1000);
+            .style("display", "block");
 
         keys.forEach(key => {
             chartDiversity.append("circle")
@@ -66,9 +64,7 @@ function makeChartDiversityAlbums() {
                 .attr("cy", y(d.Album) + y.bandwidth() / 2)
                 .attr("r", 5)
                 .style("fill", colorScale_diversity(key))
-                .style("display", "block")
-                .transition()
-                .duration(1000);
+                .style("display", "block");
         });
     });
 }
@@ -90,7 +86,6 @@ function makeChartDiversitySongs(album) {
     const diversitySongsAlbum = diversitySongs.filter(d => d.Album === album);
 
     const y = d3.scaleBand()
-        // .domain(diversitySongsAlbum.map(d => (d.Song.length > 14) ? d.Song.substring(0, 14) + "..." : d.Song))
         .domain(diversitySongsAlbum.map(d => d.Song))
         .range([0, height])
         .padding(0.3);
@@ -111,13 +106,13 @@ function makeChartDiversitySongs(album) {
         keys.forEach(key => {
             chartDiversitySongs.append("circle")
                 .attr("class", "circle")
+                .transition()
+                .duration(1500)
                 .attr("cx", x(d[key]))
                 .attr("cy", y(d.Song) + y.bandwidth() / 2)
                 .attr("r", 5)
                 .style("fill", colorScale_diversity(key))
-                .style("display", "block")
-                .transition()
-                .duration(1000);
+                .style("display", "block");
         });
     });
 }
@@ -127,12 +122,16 @@ function toggleElementsVisibility(chart, show, albumsToShow) {
         .filter(function() {
             return albumsToShow.includes(d3.select(this).attr("album"));
         })
+        .transition()
+        .duration(1000)
         .style("display", show ? "block" : "none");
 
     chart.selectAll(".circle")
         .filter(function() {
             return albumsToShow.includes(d3.select(this).attr("album"));
         })
+        .transition()
+        .duration(1000)
         .style("display", show ? "block" : "none");
 
     chart.selectAll(".Yaxis")
@@ -140,6 +139,8 @@ function toggleElementsVisibility(chart, show, albumsToShow) {
         .filter(function() {
             return albumsToShow.includes(d3.select(this).attr("album"));
         })
+        .transition()
+        .duration(1000)
         .style("opacity", show ? 1.0 : 0.2);
 }
 
@@ -164,7 +165,7 @@ function handleStepEnter(response) {
         return i === currentIndex;
     });
 
-    // update graphic based on step
+    // update graph based on step
     switch(currentIndex) {
         case 0:
             toggleElementsVisibility(chartDiversity, true, ["WPSIATWIN", "Favourite WN", "Humbug", "Suck It and See", "AM", "TBH & Casino", "The Car"])
