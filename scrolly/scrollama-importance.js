@@ -2,8 +2,6 @@
 /******* d3           */
 /**********************/ 
 
-const songSections = Object.keys(importanceAlbums[0]).filter(key => key !== "Album");
-
 const svg_importance = d3.select("#viz-importance")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -11,55 +9,34 @@ const svg_importance = d3.select("#viz-importance")
     .append("g")
     .attr("transform", `translate(0, ${margin.right})`);
 
+const colorMap = d3.scaleOrdinal()
+    .domain(["Intro", "Verse", "Pre-Chorus", "Chorus", "Post-Chorus", "Bridge", "Instrumental", "Outro"])
+    .range(d3.schemeDark2);
+
+const y = d3.scaleLinear().domain([0, 100]).range([height, 0])
+
 const chartImportance = svg_importance.append("g").attr("class", "chart");
 
 function makeChartImportanceAlbums() {
+    const songSections = Object.keys(importanceAlbums[0]).filter(key => key !== "Album");
+    
     const x = d3.scaleBand()
         .domain(importanceAlbums.map(d => d.Album))
         .range([0, width + margin.left])
         .padding(0.3);
-    
-    chartImportance.append("g")
-        .attr("transform", `translate(0, ${height + 2})`)
-        .call(d3.axisBottom(x))
-        .style("font-size", "12px")
-        .style("text-anchor", "middle")
-        .select(".domain")
-        .remove();
-
-    const y = d3.scaleLinear()
-        .domain([0, 100])
-        .range([height, 0])
-    
-    const color = d3.scaleOrdinal()
-        .domain(songSections)
-        .range(d3.schemeDark2);
     
     const stackedData = d3.stack()
         .offset(d3.stackOffsetNone)
         .keys(songSections)
         (importanceAlbums)
     
+    chartImportance.selectAll("text").remove();
+
     var Tooltip = chartImportance.append("text")
         .attr("x", 50)
         .attr("y", -10)
         .style("opacity", 0)
         .style("font-size", 15)
-    
-    var mouseover = function(d) {
-        Tooltip.style("opacity", 1)
-        d3.selectAll(".myArea").style("opacity", .2)
-        d3.select(this).style("stroke", "black").style("opacity", 1)
-    }
-    
-    var mousemove = function(d, i) {
-        Tooltip.text(songSections[i])
-    }
-    
-    var mouseleave = function(d) {
-        Tooltip.style("opacity", 0)
-        d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
-    }
     
     var area = d3.area()
         .x(function(d) { return x(d.data.Album) + x.bandwidth() / 2; })
@@ -71,11 +48,19 @@ function makeChartImportanceAlbums() {
         .enter()
         .append("path")
         .attr("class", "myArea")
-        .style("fill", function(d) { return color(d.key); })
+        .style("fill", function(d) { return colorMap(d.key); })
         .attr("d", area)
-        .on("mouseover", mouseover)
-        .on("mousemove", mousemove)
-        .on("mouseleave", mouseleave)
+        .on("mouseover", function(d) { mouseover(d, Tooltip, this); })
+        .on("mousemove", function(d, i) { mousemove(d, i, Tooltip, songSections); })
+        .on("mouseleave", function(d) { mouseleave(d, Tooltip); });
+    
+    chartImportance.append("g")
+        .attr("transform", `translate(0, ${height + 1})`)
+        .call(d3.axisBottom(x))
+        .style("font-size", "12px")
+        .style("text-anchor", "middle")
+        .select(".domain")
+        .remove();
     
     // const xScale = d3.scaleBand()
     //     .domain(songSections)
@@ -129,15 +114,67 @@ function makeChartImportanceAlbums() {
     //     .style("alignment-baseline", "middle");
 }
 
-const chartImportanceLine = svg_importance.append("g").attr("class", "chart");
-
-function makeLineChartImportance() {
-}
-
 const chartImportanceSongs = svg_importance.append("g").attr("class", "chart");
 
-function makeChartImportanceSongs() {
+function makeChartImportanceSongs(album) {
+    const importanceSongsAlbum = importanceSongs.filter(d => d.Album === album);
+    
+    const songSections = Object.keys(importanceSongs[0]).filter(key => (key !== "Album") && (key !== "Song"));
 
+    const x = d3.scaleBand()
+        .domain(importanceSongsAlbum.map(d => d.Song))
+        .range([0, width + margin.left])
+        .padding(0.3);
+
+    const stackedData = d3.stack()
+        .offset(d3.stackOffsetNone)
+        .keys(songSections)
+        (importanceSongsAlbum)
+
+    chartImportanceSongs.selectAll("text").remove();
+
+    var Tooltip = chartImportanceSongs.append("text")
+        .attr("x", 50)
+        .attr("y", -10)
+        .style("opacity", 0)
+        .style("font-size", 15)
+
+    var area = d3.area()
+        .x(function(d) { return x(d.data.Song) + x.bandwidth() / 2; })
+        .y0(function(d) { return y(d[0]); })
+        .y1(function(d) { return y(d[1]); })
+
+    chartImportanceSongs.selectAll(".myArea").remove();
+    chartImportanceSongs.selectAll(".Xaxis").remove();
+
+    chartImportanceSongs.selectAll()
+        .data(stackedData)
+        .enter()
+        .append("path")
+        .attr("class", "myArea")
+        .style("fill", function(d) { return colorMap(d.key); })
+        .attr("d", area)
+        .on("mouseover", function(d) { mouseover(d, Tooltip, this); })
+        .on("mousemove", function(d, i) { mousemove(d, i, Tooltip, songSections); })
+        .on("mouseleave", function(d) { mouseleave(d, Tooltip); });
+
+    const maxLabelLength = 8;
+    chartImportanceSongs.append("g")
+        .attr("transform", `translate(0, ${height + 1})`)
+        .call(d3.axisBottom(x))
+        .attr("class", "Xaxis")
+        .style("font-size", "10px")
+        .selectAll("text")
+        .text(function(d) {
+            const label = d3.select(this).text();
+            if (label.length > maxLabelLength) {
+                return label.slice(0, maxLabelLength) + "...";
+            }
+            return label;
+        })
+        .style("text-anchor", "middle");
+
+    chartImportanceSongs.select(".domain").remove();
 }
 
 /**********************/
@@ -164,12 +201,19 @@ function handleStepEnter(response) {
     // update graph based on step
     switch(currentIndex) {
         case 0:
+            toggleChart(chartImportance, chartImportanceSongs)
+
             break;
         case 1:
+            toggleChart(chartImportanceSongs, chartImportance)
+
+            makeChartImportanceSongs("Favourite WN")
             break;
         case 2:
+            makeChartImportanceSongs("Suck It and See")
             break;
         case 3:
+            makeChartImportanceSongs("The Car")
             break;
         case 4:
             break;

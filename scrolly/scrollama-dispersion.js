@@ -14,12 +14,12 @@ const svg_dispersion = d3.select("#viz-dispersion")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
 
-const chartDispersionAlbums = svg_dispersion.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+const chartDispersion = svg_dispersion.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 function makeChartDispersionAlbums() {
     const rectangle_width = width / albums.length;
 
-    chartDispersionAlbums.selectAll("rect")
+    chartDispersion.selectAll("rect")
         .data(dispersionAlbums)
         .enter()
         .append("g")
@@ -33,7 +33,7 @@ function makeChartDispersionAlbums() {
         .attr("height", rectangle_height)
         .style("fill", d => colorScale(d.count));
 
-    chartDispersionAlbums.selectAll("text")
+    chartDispersion.selectAll("text")
         .data(dispersionAlbums)
         .enter()
         .append("g")
@@ -49,7 +49,7 @@ function makeChartDispersionAlbums() {
         .style("font-size", "14px")
         .style("font-weight", "600");
 
-    chartDispersionAlbums.append("g")
+    chartDispersion.append("g")
         .selectAll("text")
         .data(albums)
         .enter()
@@ -60,7 +60,7 @@ function makeChartDispersionAlbums() {
         .style("text-anchor", "middle")
         .style("font-size", "12px");
 
-    chartDispersionAlbums.append("g")
+    chartDispersion.append("g")
         .selectAll("text")
         .data(words)
         .enter()
@@ -163,7 +163,7 @@ var scroller_dispersion = scrollama();
 // initialize charts
 makeChartDispersionAlbums()
 makeChartDispersionSongs()
-toggleChart(chartDispersionAlbums, chartDispersionSongs)
+toggleChart(chartDispersion, chartDispersionSongs)
 
 function handleStepEnter(response) {
     console.log(response);  // response = { element, index, direction }
@@ -177,11 +177,12 @@ function handleStepEnter(response) {
     // update graph based on step
     switch(currentIndex) {
         case 0:
-            toggleChart(chartDispersionAlbums, chartDispersionSongs)
+            toggleChart(chartDispersion, chartDispersionSongs)
 
             break;
         case 1:
-            toggleChart(chartDispersionSongs, chartDispersionAlbums)
+            toggleChart(chartDispersionSongs, chartDispersion)
+
             break;
         case 2:
             break;

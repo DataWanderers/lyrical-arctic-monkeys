@@ -41,6 +41,21 @@ function toggleChart(chart1, chart2) {  // chart1 is on, chart2 is off
     chart2.style("display", "none");
 }
 
+function mouseover(d, tooltip, selection) {
+    tooltip.style("opacity", 1)
+    d3.selectAll(".myArea").style("opacity", .2)
+    d3.select(selection).style("stroke", "black").style("opacity", 1)
+}
+
+function mousemove(d, i, tooltip, keys) {
+    tooltip.text(keys[i])
+}
+
+function mouseleave(d, tooltip) {
+    tooltip.style("opacity", 0)
+    d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
+}
+
 function showTooltip(d, tooltip, toolTipState) {
     tooltip
         .transition()
