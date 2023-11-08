@@ -127,4 +127,6 @@ for (let i = 0; i < albumButtons.length; i++) {
 }
 
 // show first album on reload
-document.getElementById("album1").click();
+const firstButton = document.getElementById("album1");
+firstButton.click();
+firstButton.focus();

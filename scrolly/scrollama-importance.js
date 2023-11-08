@@ -61,57 +61,6 @@ function makeChartImportanceAlbums() {
         .style("text-anchor", "middle")
         .select(".domain")
         .remove();
-    
-    // const xScale = d3.scaleBand()
-    //     .domain(songSections)
-    //     .range([0, width])
-    //     .padding(0.1);
-
-    // const yScale = d3.scaleBand()
-    //     .domain(importanceAlbums.map(d => d.Album))
-    //     .range([0, height]);
-
-    // const colorScale = d3.scaleSequential(d3.interpolateBlues)
-    //     .domain([0, d3.max(importanceAlbums, d => d3.max(songSections, s => d[s]))]);
-
-    // chartImportance.selectAll(".bar")
-    //     .data(importanceAlbums)
-    //     .enter()
-    //     .append("g")
-    //     .attr("class", "album")
-    //     .attr("transform", d => `translate(0, ${yScale(d.Album)})`)
-    //     .selectAll(".bar")
-    //     .data(d => songSections.map(s => ({ section: s, value: d[s] })))
-    //     .enter()
-    //     .append("rect")
-    //     .attr("class", "bar")
-    //     .attr("x", d => xScale(d.section))
-    //     .attr("y", 0)
-    //     .attr("width", xScale.bandwidth())
-    //     .attr("height", yScale.bandwidth())
-    //     .style("fill", d => colorScale(d.value));
-
-    // chartImportance.selectAll(".section-label")
-    //     .data(songSections)
-    //     .enter()
-    //     .append("text")
-    //     .attr("class", "section-label")
-    //     .text(d => d)
-    //     .attr("x", d => xScale(d) + xScale.bandwidth() / 2)
-    //     .attr("y", height + 20)
-    //     .style("text-anchor", "middle");
-
-    // chartImportance.selectAll(".album-label")
-    //     .data(importanceAlbums)
-    //     .enter()
-    //     .append("text")
-    //     .attr("class", "album-label")
-    //     .text(d => d.Album)
-    //     .attr("x", -10)
-    //     .attr("y", d => yScale(d.Album) + yScale.bandwidth() / 2)
-    //     .style("font-size", "12px")
-    //     .style("text-anchor", "end")
-    //     .style("alignment-baseline", "middle");
 }
 
 const chartImportanceSongs = svg_importance.append("g").attr("class", "chart");

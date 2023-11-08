@@ -41,6 +41,10 @@ function toggleChart(chart1, chart2) {  // chart1 is on, chart2 is off
     chart2.style("display", "none");
 }
 
+function hideTooltip(d, tooltip) {
+    tooltip.transition().duration(200).style("opacity", 0)
+}
+
 function mouseover(d, tooltip, selection) {
     tooltip.style("opacity", 1)
     d3.selectAll(".myArea").style("opacity", .2)
@@ -52,33 +56,8 @@ function mousemove(d, i, tooltip, keys) {
 }
 
 function mouseleave(d, tooltip) {
-    tooltip.style("opacity", 0)
+    hideTooltip(d, tooltip)
     d3.selectAll(".myArea").style("opacity", 1).style("stroke", "none")
-}
-
-function showTooltip(d, tooltip, toolTipState) {
-    tooltip
-        .transition()
-        .duration(200)
-    tooltip
-        .style("opacity", 1)
-        .html(returnTooltipText(toolTipState, d))
-}
-
-function hideTooltip(d, tooltip) {
-    tooltip
-        .transition()
-        .duration(200)
-        .style("opacity", 0)
-}
-
-function returnTooltipText(step, d) {
-    switch (step) {
-        case "song":
-            return d.song
-        case "song count":
-            return d.index + ": " + d.count
-    }
 }
 
 function toggleElementOpacity(element, opacity) {

@@ -4,6 +4,7 @@ import pandas as pd
 import src.utils as utl
 
 TERMS_ROMANCE = [
+    "romance",
     "love",
     "girl",
     "kiss",
@@ -11,7 +12,6 @@ TERMS_ROMANCE = [
     "dance",
     "heart",
     "passion",
-    "desire",
     "eyes",
     "honey",
 ]
@@ -147,10 +147,6 @@ def create_data_lexical_dispersion(data, dtm):
         lexical_disp_by_song, {"album_key": "Album", "song_tit": "Song"}
     )
     utl.save_to_js(DIR_DATA, "dispersionSongs", lexical_disp_by_song)
-
-    # word_counts.sum(axis=0)[TERMS_ROMANCE]  # nbr. of mentions
-    # word_counts[TERMS_ROMANCE].groupby("album_key").sum()  # nbr. of albums
-    # (word_counts > 0).sum(axis=0).sort_values()[TERMS_ROMANCE]  # nbr. of songs
 
 
 #########################
