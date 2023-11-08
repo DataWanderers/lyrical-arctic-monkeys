@@ -11,7 +11,7 @@ const svg_importance = d3.select("#viz-importance")
 
 const colorMap = d3.scaleOrdinal()
     .domain(["Intro", "Verse", "Pre-Chorus", "Chorus", "Post-Chorus", "Bridge", "Instrumental", "Outro"])
-    .range(d3.schemeDark2);
+    .range(d3.schemeCategory10);
 
 const y = d3.scaleLinear().domain([0, 100]).range([height, 0])
 

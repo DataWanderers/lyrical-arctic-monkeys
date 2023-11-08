@@ -115,6 +115,12 @@ function displayAlbumInfo(albumIndex) {
     albumDescription.textContent = album.description;
     songList.textContent = album.songs.join(", ");
 
+    const albumButtons = document.querySelectorAll(".styled-button");
+    albumButtons.forEach((button) => {
+        button.classList.remove("active-button");
+    });
+    albumButtons[albumIndex].classList.add("active-button");
+
     document.getElementById("album-info").classList.remove("hidden");
 }
 
@@ -129,4 +135,3 @@ for (let i = 0; i < albumButtons.length; i++) {
 // show first album on reload
 const firstButton = document.getElementById("album1");
 firstButton.click();
-firstButton.focus();

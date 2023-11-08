@@ -1,39 +1,43 @@
 <!DOCTYPE html>
 <html>
   <head>
-      <meta charset="utf-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-      <title>Arctic Monkeys Songs Untangled</title>
-      <meta name="description" content="Arctic Monkeys Songs Untangled" />
+    <title>Arctic Monkeys Songs Untangled</title>
+    <meta name="description" content="Arctic Monkeys Songs Untangled" />
 
-      <!-- Load (external) scripts here -->
-      <script defer src="src/d3.5.9.1.min.js"></script>
-      <script defer src="src/intersection-observer.js"></script>
-      <script defer src="src/stickyfill.min.js"></script>
-      <script defer src="src/scrollama.min.js"></script>
-    
-      <script defer src="data/importanceAlbums.js"></script>
-      <script defer src="data/importanceSongs.js"></script>
-      <script defer src="data/diversityAlbums.js"></script>
-      <script defer src="data/diversitySongs.js"></script>
-      <script defer src="data/dispersionAlbums.js"></script>
-      <script defer src="data/dispersionSongs.js"></script>
-  
-      <script defer src="utils.js"></script>
-      <script defer src="intro-albums.js"></script>
-      <script defer src="scrollama-importance.js"></script>
-      <script defer src="scrollama-diversity.js"></script>
-      <script defer src="scrollama-dispersion.js"></script>
+    <!-- Load (external) scripts here -->
+    <script defer src="src/d3.5.9.1.min.js"></script>
+    <script defer src="src/intersection-observer.js"></script>
+    <script defer src="src/stickyfill.min.js"></script>
+    <script defer src="src/scrollama.min.js"></script>
 
-      <!-- Load (external) links here -->
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script defer src="data/importanceAlbums.js"></script>
+    <script defer src="data/importanceSongs.js"></script>
+    <script defer src="data/diversityAlbums.js"></script>
+    <script defer src="data/diversitySongs.js"></script>
+    <script defer src="data/dispersionAlbums.js"></script>
+    <script defer src="data/dispersionSongs.js"></script>
 
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-      <link rel="stylesheet" href="style.css" />
+    <script defer src="utils.js"></script>
+    <script defer src="intro-albums.js"></script>
+    <script defer src="scrollama-importance.js"></script>
+    <script defer src="scrollama-diversity.js"></script>
+    <script defer src="scrollama-dispersion.js"></script>
+
+    <!-- Load (external) links here -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;700&display=swap" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Load (external) links here -->
+    <link rel="icon" href="assets/AW.jpg" type="image/x-icon">
+    <link rel="shortcut icon" href="assets/AW.jpg" type="image/x-icon">
   </head>
 
   <body>
@@ -52,7 +56,7 @@
             This page tells you the story of how the song catalogue of the Arctic Monkeys changed during their 15+ years of existence.
         </p>
         <p>
-            Read more on how the analysis came about on 
+            Read more about how the analysis developed on 
             <a href="https://medium.com/@sborms/scraping-arctic-monkeys-songs-from-genius-31342eb44a23" target="_blank">Medium</a>.
         </p>
         <p class="seperator">
@@ -80,7 +84,7 @@
         <h3>Albums discography</h3>
         <div id="discography">
             <div id="album-buttons">
-                <button class="styled-button" id="album1">WPSIATWIN</button>
+                <button class="styled-button active-button" id="album1">WPSIATWIN</button>
                 <button class="styled-button" id="album2">Favourite WN</button>
                 <button class="styled-button" id="album3">Humbug</button>
                 <button class="styled-button" id="album4">Suck It and See</button>
@@ -93,7 +97,7 @@
                 <img id="album-cover" alt="Album cover">
                 <div id="description">
                     <p id="album-description"></p>
-                    <h4><strong>Bangers 🎙️</strong></h4>
+                    <h4><b>Bangers 🎙️</b></h4>
                     <p id="song-list"></p>
                 </div>
             </div>
@@ -323,9 +327,10 @@
         <p class="seperator">
         </p>
         <p>
-            That was it! I hope you enjoyed this little interactive story about the Arctic Monkeys.
+            <b>That was it!</b> I hope you enjoyed this little data-based interactive story about the Arctic Monkeys. 
         </p>
         <p>
+            There are more aggregated data and visualizations to explore.
             If you like this, I would love to share my enthusiasm about the Arctic Monkeys, music, and data analysis with you.
             You can find contact details on my <a href="http://www.samborms.com/" target="_blank">website</a>. 
         </p>    

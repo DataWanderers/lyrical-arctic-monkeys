@@ -42,7 +42,7 @@ function toggleChart(chart1, chart2) {  // chart1 is on, chart2 is off
 }
 
 function hideTooltip(d, tooltip) {
-    tooltip.transition().duration(200).style("opacity", 0)
+    tooltip.style("opacity", 0)
 }
 
 function mouseover(d, tooltip, selection) {
@@ -61,10 +61,7 @@ function mouseleave(d, tooltip) {
 }
 
 function toggleElementOpacity(element, opacity) {
-    element
-        .transition()
-        .duration(1000)
-        .style("opacity", opacity)
+    element.transition().duration(1000).style("opacity", opacity)
 }
 
 function toggleAxesOpacity(chart, toggleX, toggleY, opacity) {
