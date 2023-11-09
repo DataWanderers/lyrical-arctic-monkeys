@@ -172,25 +172,25 @@ function makeChartDispersionSongs() {
         .style("alignment-baseline", "middle");
 }
 
-function zoomRowOrColumn(chart, word, album) {
-    if (word != null) {
+function zoomRowOrColumn(chart, words, albums) {
+    if (words != null) {
         chart.selectAll("rect, .count")
             .transition()
             .duration(500)
-            .style("display", d => (d.word === word) ? "block" : "none");
+            .style("display", d => (words.includes(d.word)) ? "block" : "none");
 
         chart.selectAll(".Yaxis")
-            .style("opacity", d => (d === word) ? 1.0 : 0.2);
+            .style("opacity", d => (words.includes(d)) ? 1.0 : 0.2);
 
         chart.selectAll(".Xaxis").style("opacity", 1.0);
-    } else if (album != null) {
+    } else if (albums != null) {
         chart.selectAll("rect, .count")
             .transition()
             .duration(500)
-            .style("display", d => (d.album === album) ? "block" : "none");
+            .style("display", d => (albums.includes(d.album)) ? "block" : "none");
 
         chart.selectAll(".Xaxis")
-            .style("opacity", d => (d === album) ? 1.0 : 0.2);
+            .style("opacity", d => (albums.includes(d)) ? 1.0 : 0.2);
 
         chart.selectAll(".Yaxis").style("opacity", 1.0);
     }
@@ -234,31 +234,25 @@ function handleStepEnter(response) {
             resetChart(chartDispersion)
             break;
         case 1:
-            zoomRowOrColumn(chartDispersion, "Love", null)
+            zoomRowOrColumn(chartDispersion, null, ["WPSIATWIN", "Suck It and See", "AM"])
             break;
         case 2:
-            zoomRowOrColumn(chartDispersion, "Eyes", null)           
-            break;
-        case 3:
             toggleChart(chartDispersion, chartDispersionSongs)
 
-            zoomRowOrColumn(chartDispersion, null, "Suck It and See")
+            zoomRowOrColumn(chartDispersion, "Romance", null)
             break;
-        case 4:
+        case 3:
             toggleChart(chartDispersionSongs, chartDispersion)
 
             resetChart(chartDispersionSongs)
             break;
+        case 4:
+            zoomRowOrColumn(chartDispersionSongs, ["Love", "Heart", "Eyes"], null)
+            break;
         case 5:
-            zoomRowOrColumn(chartDispersionSongs, "Love", null)
-            break;
-        case 6:
-            zoomRowOrColumn(chartDispersionSongs, null, "WPSIATWIN")
-            break;
-        case 7:
             toggleChart(chartDispersionSongs, chartDispersion)  // needed in case of a refresh when at bottom of page
             
-            zoomRowOrColumn(chartDispersionSongs, null, "Humbug")
+            zoomRowOrColumn(chartDispersionSongs, null, ["Humbug", "The Car"])
             break;
         default:
             break;
