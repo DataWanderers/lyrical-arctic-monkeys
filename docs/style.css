@@ -179,8 +179,8 @@ figure {
     margin: 25px 0;
 }
 
-.step:last-child {
-    margin-bottom: 1%;
+.step:last-of-type {
+    margin-bottom: 10px;
 }
 
 .step h2, .step p {
