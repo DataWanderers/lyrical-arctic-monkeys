@@ -12,7 +12,7 @@ Find the web page [here](https://datawanderers.github.io/lyrical-arctic-monkeys)
 
 ## How?
 
-The scrollytelling code is expanded from this [example](https://github.com/edriessen/scrollytelling-scrollama-d3-demo). This is another useful beginner's [resource](https://github.com/uclab-potsdam/scrollytelling-beginners/tree/master). This was nice [inspiration](https://baryon.be/stories/jamesbond).
+The scrollytelling code is expanded from this [example](https://github.com/edriessen/scrollytelling-scrollama-d3-demo). This is another useful beginner's [resource](https://github.com/uclab-potsdam/scrollytelling-beginners/tree/master). This is a nice but unrelated piece of [inspiration](https://baryon.be/stories/jamesbond).
 
 To read more about how the data, analysis, and web page came about: check out the three-part Medium series (click on the badge at the top).
 
