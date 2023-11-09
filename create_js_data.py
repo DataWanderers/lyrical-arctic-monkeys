@@ -27,7 +27,7 @@ SONG_SECTIONS = [
     "OUTRO",
 ]
 
-DIR_DATA = "scrolly/data"
+DIR_DATA = "docs/data"
 
 #########################
 ##### FUNCTIONS         #
