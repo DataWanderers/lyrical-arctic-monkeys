@@ -1,6 +1,6 @@
 /**********************/
 /******* d3           */
-/**********************/ 
+/**********************/
 
 const svg_diversity = d3.select("#viz-diversity")
     .append("svg")
@@ -97,7 +97,7 @@ function makeChartDiversitySongs(album) {
         .call(d3.axisLeft(y))
         .attr("class", "Yaxis")
         .style("font-size", "12px")
-        .style("font-style", "italic")
+        // .style("font-style", "italic")
         .selectAll("text")
         .style("text-anchor", "start")
         .attr("dx", "1.1em");

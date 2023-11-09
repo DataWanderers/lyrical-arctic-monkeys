@@ -62,6 +62,18 @@ body {
     margin-bottom: 0;
 }
 
+#duration {
+    min-height:339px;
+    margin-bottom: 20px;
+    padding: auto;
+}
+
+.bsongs {
+    color: #001f3f;
+    /* text-decoration: underline; */
+    text-shadow: 3px 3px 3px #ddd;
+}
+
 h1 {
     font-size: 3em;
     line-height: 1em;
@@ -157,7 +169,7 @@ figure {
 }
 
 .step:last-child {
-    margin-bottom: 5%;
+    margin-bottom: 1%;
 }
 
 .step h2, .step p {
@@ -232,7 +244,7 @@ p span.label {
 }
 
 .orange {
-    color: orange;
+    color: #ffa500;
 }
 
 .blue {

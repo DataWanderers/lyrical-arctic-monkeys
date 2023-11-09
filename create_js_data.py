@@ -64,6 +64,19 @@ def prepare_data(data):
     return data, dtm
 
 
+def create_data_song_dur(data):
+    """Creates and stores data with average song duration per album."""
+    # durationAlbums
+    song_dur_by_album = (
+        data.groupby(["album_key"])["song_dur"].agg({np.median, np.mean})
+    )[["median", "mean"]]
+    song_dur_by_album.columns = ["Median", "Mean"]
+    song_dur_by_album.reset_index(drop=False, inplace=True)
+    song_dur_by_album = utl.prepare_columns(song_dur_by_album, {"album_key": "Album"})
+    # utl.save_to_js(DIR_DATA, "durationAlbums", song_dur_by_album)
+    song_dur_by_album.to_csv(f"{DIR_DATA}/durationAlbums.csv", index=False)
+
+
 def create_data_song_sec_importance(data):
     """Creates and stores aggregated song section importance data."""
     sections_by_album = data.groupby("album_key")["song_sec"].value_counts()
@@ -157,6 +170,7 @@ if __name__ == "__main__":
     data, dtm = prepare_data(data_raw)
     print("Data prepared!")
 
+    create_data_song_dur(data)
     create_data_song_sec_importance(data)
     create_data_lexdiv(data)
     create_data_lexical_dispersion(data, dtm)

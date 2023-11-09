@@ -2,8 +2,8 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- <meta http-equiv="X-UA-Compatible" content="IE=edge" /> -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 
     <title>Arctic Monkeys Songs Untangled</title>
     <meta name="description" content="Arctic Monkeys Songs Untangled" />
@@ -35,8 +35,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <link rel="stylesheet" href="style.css" />
 
-    <!-- Load (external) links here -->
-    <link rel="icon" href="assets/AW.jpg" type="image/x-icon">
+    <!-- Load icons here -->
+    <!-- <link rel="icon" href="assets/AW.jpg" type="image/x-icon"> -->
     <link rel="shortcut icon" href="assets/AW.jpg" type="image/x-icon">
   </head>
 
@@ -68,7 +68,7 @@
         <p>
             The Arctic Monkeys are a British rock band formed in Sheffield in 2002.
             Known for their distinctive sound and clever lyrics, they quickly rose to prominence in the mid-2000s.
-            Their debut album "Whatever People Say I Am, That's What I'm Not (WPSIATWIN)" was released in 2006.
+            Their debut album <i>Whatever People Say I Am, That's What I'm Not</i> (<i>WPSIATWIN</i>) was released in 2006.
             It became the fastest-selling debut album in UK chart history.
         </p>
         <p>
@@ -105,6 +105,19 @@
         <p>
             Let's now subject Arctic Monkey's said evolving musical style to the test of data analysis and visualization!
         </p>
+        <p>
+            To kick off, here's a visual that shows the median and average song duration for each album. This allows already
+            for an interesting first conclusion, namely that songs have considerably increased in length over the years. Not
+            quite sure if the radio stations (or listener's shortening attention span) are happy with that.
+        </p>
+        <div id="duration">
+            <script type="text/javascript" defer src="https://datawrapper.dwcdn.net/HFHtq/embed.js?v=1" charset="utf-8"></script>
+                <noscript><img src="https://datawrapper.dwcdn.net/HFHtq/full.png" alt="" /></noscript>
+            </script>
+        </div>
+        <p>
+            Time to move on to the more interactive part, otherwise I might lose my train of thought...
+        </p>
       </section>
 
       <section class="generic">
@@ -129,44 +142,59 @@
                 <h2>An album's perspective first</h2>
                 <p>
                     A typical song structure, from intro to outro, is represented from bottom to top.
+                    The verse and the chorus take up the biggest proportions of a song.
+                    Verses became more important the last two albums.
+                    Instrumental and outro sections have become less prevalent.
                 </p>
             </div>
             
             <div class="step" data-step="2">
                 <h2><i>Favourite Worst Nightmare</i></h2>
                 <p>
-                    TODO.
+                    Take the second album for a songwise perspective.
+                    Not all songs have a long-enough intro or outro.
+                    The song with the largest outro is <b class="bsongs">If You Were There, Beware</b>.
+                    It is an eclectic one for sure!
+                    Beautiful closer <b class="bsongs">505</b> has a good equilibrium.
                 </p>
             </div>
             
             <div class="step" data-step="3">
                 <h2><i>Suck It and See</i></h2>
                 <p>
-                    TODO.
+                    Moving on to the fourth album, the balance is different.
+                    Intro's are limited, and longer verses are becoming more of a thing.
+                    The chorus is still key for many songs, such as <b class="bsongs">She's Thunderstorms</b> and <b class="bsongs">Love Is a Laserquest</b>.
                 </p>
             </div>
             
             <div class="step" data-step="4">
-                <h2><i>The Car</i></h2>
+                <h2><i>AM</i></h2>
                 <p>
-                    TODO.
+                    The fifth album is a prime example of balance.
+                    Almost all songs follow a dosed pattern of a short intro, to-the-point verses and a Helter Skelter chorus.
+                    No wonder this album shot the band to international fame for good.
                 </p>
             </div>
             
             <div class="step" data-step="5">
-                <h2>TODO</h2>
+                <h2><i>The Car</i></h2>
                 <p>
-                    TODO.
-                </p>
-            </div>
-            
-            <div class="step" data-step="6">
-                <h2>TODO</h2>
-                <p>
-                    TODO.
+                    The latest album continues the trend away from <i>AM</i> and before that.
+                    The emphasis strongly shifted to verses.
+                    This shows especially throughout the second half of the record, for instance, <b class="bsongs">Perfect Sense</b> has only verses.
+                    They must be sending a message.
                 </p>
             </div>
         </article>
+      </section>
+
+      <section class="generic">
+        <p>
+            It's not easy to discern conclusions from the structure of songs that can change without good reason other than an artist's mood.
+            It flows both ways.
+            What is striking is the increasing importance of verses, as well as the relevance of the chorus in hit songs.
+        </p>
       </section>
 
       <section class="generic">
@@ -174,6 +202,7 @@
         <p>
             To measure the lyrical variation of a song, a useful metric is the so-called <b>lexical diversity</b>.
             This metric is the ratio of the number of unique words versus the total number of words in a song.
+            Lexical diversity ranges between 0% and 100%.
             In other <i>words</i>, the higher this value, the more unique a song can be considered.
         </p>
       </section>
@@ -187,50 +216,55 @@
             <div class="step" data-step="1">
                 <h2>Upward trend</h2>
                 <p>
-                    Lexical diversity ranges between 0% and 100%.
-                    The dots respectively show the
+                    The dots in the graph show the
                     <span class="label blue">minimum</span>, 
                     <span class="label orange">median</span>, and 
                     <span class="label red">maximum</span> lexical diversity.
 
-                    Looking at all the albums, a trend becomes quite clear.
+                    Looking at all the albums, we notice a trend.
                     The lexical diversity of the albums has increased over the years.
+                    Remember, the songs became longer (hence, you'd expect more repetitive), but the conclusion still holds.
                 </p>
             </div>
             
             <div class="step" data-step="2">
                 <h2>Debut lexical diversity</h2>
                 <p>
-                    The first album "Whatever People Say I Am, That's What I'm Not" has a low lexical diversity.
+                    The first album <i>Whatever People Say I Am, That's What I'm Not</i> has a low lexical diversity.
+                    About 70% of the words are unique.
                 </p>
             </div>
 
             <div class="step" data-step="3">
                 <h2><i>WPSIATWIN</i></h2>
                 <p>
-                    TODO.
+                    The songs are short and punchy.
+                    Night-out classic <b class="bsongs">From the Ritz to the Rubble</b> has a surprisingly low value.
+                    Does this mean such songs are less creative lyrically?
+                    Of course not!
                 </p>
             </div>
 
             <div class="step" data-step="4">
                 <h2>Least unique</h2>
                 <p>
-                    Self-titled album "AM" is least lyrically diverse.
-                    That should come as no surprise, given the many hits in this album.
+                    Self-titled album <i>AM</i> is least lyrically diverse.
+                    That should come as no surprise, given the many hits in this album and the heavy focus on choruses.
                 </p>
             </div>
 
             <div class="step" data-step="5">
                 <h2><i>AM</i></h2>
                 <p>
-                    There's only one song more repetitive than "Mad Sounds". You guessed it: the catchy "Brick by Brick" from the preceding album.
+                    There's only one song more repetitive than <b class="bsongs">Mad Sounds</b>.
+                    You guessed it: the catchy <b class="bsongs">Brick by Brick</b> from the preceding album.
                 </p>
             </div>
 
             <div class="step" data-step="6">
                 <h2>Most unique</h2>
                 <p>
-                    Arctic Monkey's latest album "The Car" is lyrically the most diverse.
+                    Arctic Monkey's latest album <i>The Car</i> is lyrically the most diverse.
                     The median lexical diversity is very close to the album maximum, suggesting that at least half of the songs are very unique words-wise.
                 </p>
             </div>
@@ -238,7 +272,10 @@
             <div class="step" data-step="7">
                 <h2><i>The Car</i></h2>
                 <p>
-                    TODO.
+                    Again, songs are comparably longer on this album but lyrics are not repetitive at all.
+                    Impressive!
+                    Only <b class="bsongs">Body Paint</b> is the exception to the rule.
+                    It was released as a single... 
                 </p>
             </div>
         </article>
@@ -246,7 +283,9 @@
 
       <section class="generic">
         <p>
-            So how lyrically diverse is the songwriting of Alex Turner now?
+            So how lyrically diverse is the songwriting of Alex Turner then?
+            Increasingly so!
+            You will find wordplay gems from his early days up until now, but he has become more creative over the years.
         </p>
       </section>
 
@@ -256,6 +295,12 @@
             <b>Lexical dispersion</b> shows when and how often words occur in a song.
             You can think of it as a timeline of the words in a song.
             The graphs below will take you through that timeline for a couple of common romantic words.
+        </p>
+        <p>
+            Romance is without a doubt a theme within Arctic Monkeys songs.
+            Alex Turner and words, a love story pur sang.
+            Yet, do the songs mention love explicitly or is it rather a between-the-lines affair?
+            Let's find out how regularly a selection of ten romance-laden words such as <b>love</b>, <b>baby</b>, or <b>heart</b> pop up in the songs.
         </p>
     </section>
 
@@ -332,7 +377,8 @@
         <p>
             There are more aggregated data and visualizations to explore.
             If you like this, I would love to share my enthusiasm about the Arctic Monkeys, music, and data analysis with you.
-            You can find contact details on my <a href="http://www.samborms.com/" target="_blank">website</a>. 
+            I you have a lesson to teach me, always glad to listen, ready to learn.
+            You can find my contact details on my <a href="http://www.samborms.com/" target="_blank">website</a>. 💌
         </p>    
     </section>
     </main>

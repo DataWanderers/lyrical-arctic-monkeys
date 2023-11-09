@@ -1,6 +1,6 @@
 /**********************/
 /******* d3           */
-/**********************/ 
+/**********************/
 
 const words = Object.keys(dispersionAlbums[0]).filter(word => word !== "Album");
 const albums = dispersionAlbums.map(d => d.Album);
@@ -43,7 +43,7 @@ function makeChartDispersionAlbums() {
         .enter()
         .append("text")
         .attr("class", "count")
-        .text(function(d) { if (d.count > 0) return d.count; }) // show the count inside the rectangle
+        .text(function(d) { if (d.count > 0) return d.count; })  // show the count inside the rectangle
         .attr("x", (d, i) => albums.indexOf(d.album) * rectangle_width + rectangle_width / 2)
         .attr("y", (d, i) => i * rectangle_height + rectangle_height / 2)
         .style("text-anchor", "middle")
@@ -256,6 +256,8 @@ function handleStepEnter(response) {
             zoomRowOrColumn(chartDispersionSongs, null, "WPSIATWIN")
             break;
         case 7:
+            toggleChart(chartDispersionSongs, chartDispersion)  // needed in case of a refresh when at bottom of page
+            
             zoomRowOrColumn(chartDispersionSongs, null, "Humbug")
             break;
         default:

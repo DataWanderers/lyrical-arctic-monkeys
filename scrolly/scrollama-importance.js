@@ -1,6 +1,6 @@
 /**********************/
 /******* d3           */
-/**********************/ 
+/**********************/
 
 const svg_importance = d3.select("#viz-importance")
     .append("svg")
@@ -162,11 +162,12 @@ function handleStepEnter(response) {
             makeChartImportanceSongs("Suck It and See")
             break;
         case 3:
-            makeChartImportanceSongs("The Car")
+            makeChartImportanceSongs("AM")
             break;
         case 4:
-            break;
-        case 5:
+            toggleChart(chartImportanceSongs, chartImportance)  // needed in case of a refresh when at bottom of page
+
+            makeChartImportanceSongs("The Car")
             break;
         default:
             break;
