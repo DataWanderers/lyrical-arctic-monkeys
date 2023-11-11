@@ -225,7 +225,7 @@ function init() {
         .onStepEnter(handleStepEnter);
 
     // setup resize event
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", function() { handleResize(scroller_diversity, figure_diversity, step_diversity); });
 }
 
 // kick things off

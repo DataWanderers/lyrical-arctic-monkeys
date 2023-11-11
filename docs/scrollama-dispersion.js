@@ -276,7 +276,7 @@ function init() {
         .onStepEnter(handleStepEnter);
 
     // setup resize event
-    window.addEventListener("resize", handleResize);
+    window.addEventListener("resize", function() { handleResize(scroller_dispersion, figure_dispersion, step_dispersion); });
 }
 
 // kick things off
