@@ -262,11 +262,8 @@ function handleStepEnter(response) {
 function init() {
     setupStickyfill();
 
-    // 1. force a resize on load to ensure proper dimensions are sent to scrollama
     handleResize(scroller_dispersion, figure_dispersion, step_dispersion);
 
-    // 2. setup the scroller passing options, this will also initialize trigger observations
-    // 3. bind scrollama event handlers (this can be chained like below)
     scroller_dispersion
         .setup({
             step: "#scrolly-dispersion article .step",
@@ -275,9 +272,7 @@ function init() {
         })
         .onStepEnter(handleStepEnter);
 
-    // setup resize event
     window.addEventListener("resize", function() { handleResize(scroller_dispersion, figure_dispersion, step_dispersion); });
 }
 
-// kick things off
 init();

@@ -181,7 +181,7 @@ function init() {
     handleResize(scroller_importance, figure_importance, step_importance);
 
     // 2. setup the scroller passing options, this will also initialize trigger observations
-    // 3. bind scrollama event handlers (this can be chained like below)
+    // 3. bind scrollama event handlers
     scroller_importance
         .setup({
             step: "#scrolly-importance article .step",

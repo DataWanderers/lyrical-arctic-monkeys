@@ -211,11 +211,8 @@ function handleStepEnter(response) {
 function init() {
     setupStickyfill();
 
-    // 1. force a resize on load to ensure proper dimensions are sent to scrollama
     handleResize(scroller_diversity, figure_diversity, step_diversity);
 
-    // 2. setup the scroller passing options, this will also initialize trigger observations
-    // 3. bind scrollama event handlers (this can be chained like below)
     scroller_diversity
         .setup({
             step: "#scrolly-diversity article .step",
@@ -224,9 +221,7 @@ function init() {
         })
         .onStepEnter(handleStepEnter);
 
-    // setup resize event
     window.addEventListener("resize", function() { handleResize(scroller_diversity, figure_diversity, step_diversity); });
 }
 
-// kick things off
 init();

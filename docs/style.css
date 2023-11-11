@@ -167,6 +167,7 @@ figure {
 }
 
 .viz {
+    max-width: 100%;
     width: 750px;
     float: right;
 }
