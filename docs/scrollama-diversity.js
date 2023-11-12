@@ -66,15 +66,15 @@ function makeChartDiversityAlbums() {
 
 const chartDiversitySongs = svg_diversity.append("g").attr("class", "chart");
 
-chartDiversitySongs.append("g")
-    .attr("transform", `translate(0, ${height})`)    
-    .call(d3.axisBottom(x)
-            .tickFormat(d => (d === 100 ? "100%" : d)));
-
 function makeChartDiversitySongs(album) {
     const keys = ["Diversity"]
     const diversitySongsAlbum = diversitySongs.filter(d => d.Album === album);
 
+    chartDiversitySongs.append("g")
+        .attr("transform", `translate(0, ${height})`)    
+        .call(d3.axisBottom(x)
+                .tickFormat(d => (d === 100 ? "100%" : d)));
+    
     const y = d3.scaleBand()
         .domain(diversitySongsAlbum.map(d => d.Song))
         .range([0, height])
