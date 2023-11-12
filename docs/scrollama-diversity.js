@@ -70,10 +70,13 @@ function makeChartDiversitySongs(album) {
     const keys = ["Diversity"]
     const diversitySongsAlbum = diversitySongs.filter(d => d.Album === album);
 
+    chartDiversitySongs.selectAll(".Xaxis").remove();
+
     chartDiversitySongs.append("g")
         .attr("transform", `translate(0, ${height})`)    
         .call(d3.axisBottom(x)
-                .tickFormat(d => (d === 100 ? "100%" : d)));
+                .tickFormat(d => (d === 100 ? "100%" : d)))
+        .attr("class", "Xaxis");
     
     const y = d3.scaleBand()
         .domain(diversitySongsAlbum.map(d => d.Song))
@@ -157,7 +160,7 @@ function handleStepEnter(response) {
 
     // update graph based on step
     switch(currentIndex) {
-        case 0:
+        case 0:            
             toggleElementsVisibility(chartDiversity, true, ["WPSIATWIN", "Favourite WN", "Humbug", "Suck It and See", "AM", "TBH & Casino", "The Car"])
             break;
         case 1:
