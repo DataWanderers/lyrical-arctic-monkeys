@@ -4,7 +4,7 @@ const albumsData = [
         image: "assets/WPSIATWIN.jpg",
         description: [
             "Their debut album captures the raw energy and observations of youth \
-            in Sheffield with a distinctive blend of indie rock and vivid \
+            in Sheffield with a distinctive mix of indie rock and vivid \
             storytelling, making it the fastest-selling debut album in UK chart history."
         ],
         songs: [
@@ -49,7 +49,7 @@ const albumsData = [
         image: "assets/SUCKIT.jpg",
         description: [
             "This album marks a return to a more accessible and melodic style, blending catchy \
-            tunes with poetic lyricism, and solidifies the band's status."
+            tunes with poetic lyricism, solidifying the band's status."
         ],
         songs: [
             "Don't Sit Down 'Cause I've Moved Your Chair",
@@ -64,7 +64,7 @@ const albumsData = [
         image: "assets/AM.jpg",
         description: [
             "AM is characterized by its seductive, R&B-influenced sound, exploring themes of desire, \
-            lust, and longing, and becoming a commercial and critical worldwide success."
+            lust, and longing. It became a commercial and critical worldwide success."
         ],
         songs: [
             "Do I Wanna Know?",
@@ -93,7 +93,7 @@ const albumsData = [
         image: "assets/CAR.jpg",
         description: [
             "A further departure from the rock & roll hits, the Arctic Monkeys continue to delve into \
-            new sounds and a soother gaze with the currently last studio record."
+            new sounds and a soother gaze with their last studio record."
         ],
         songs: [
             "There'd Better Be A Mirrorball",

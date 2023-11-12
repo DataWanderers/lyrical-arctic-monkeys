@@ -22,13 +22,8 @@ function makeChartDiversityAlbums() {
 
     chartDiversity.append("g")
         .attr("transform", `translate(0, ${height})`)    
-        .call(d3.axisBottom(x));
-
-    chartDiversity.append("text")
-        .attr("x", width / 2)
-        .attr("y", height + margin.bottom - 5)
-        .style("text-anchor", "middle")
-        .text("Lexical diversity (%)");
+        .call(d3.axisBottom(x)
+                .tickFormat(d => (d === 100 ? "100%" : d)));
 
     const y = d3.scaleBand()
         .domain(diversityAlbums.map(d => d.Album))
@@ -73,13 +68,8 @@ const chartDiversitySongs = svg_diversity.append("g").attr("class", "chart");
 
 chartDiversitySongs.append("g")
     .attr("transform", `translate(0, ${height})`)    
-    .call(d3.axisBottom(x));
-
-chartDiversitySongs.append("text")
-    .attr("x", width / 2)
-    .attr("y", height + margin.bottom - 5)
-    .style("text-anchor", "middle")
-    .text("Lexical diversity (%)");
+    .call(d3.axisBottom(x)
+            .tickFormat(d => (d === 100 ? "100%" : d)));
 
 function makeChartDiversitySongs(album) {
     const keys = ["Diversity"]

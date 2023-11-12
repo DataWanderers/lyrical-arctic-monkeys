@@ -16,7 +16,7 @@ body {
 }
 
 .styled-button {
-    padding: 5px 10px;
+    padding: 1% 1.5%;
     background-color: #0b273a;
     color: #fff;
     border: none;
@@ -31,6 +31,7 @@ body {
 }
 
 #album-buttons {
+    text-align: center;
     margin-bottom: 15px;
 }
 
@@ -80,8 +81,7 @@ body {
 
 .bsongs {
     color: #001f3f;
-    /* text-decoration: underline; */
-    text-shadow: 3px 3px 3px #ddd;
+    text-shadow: 2px 2px 2px #ddd;
 }
 
 h1 {
@@ -154,12 +154,17 @@ section#intro {
     color: #000;
 }
 
+.generic.transition {
+    padding-top: 15px;
+}
+
 figure {
     position: -webkit-sticky;
     position: sticky;
     right: 0;
     width: 1000px;
-    margin: 0 auto;
+    /* margin: 0 auto; */
+    margin-bottom: 2%;
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
@@ -172,16 +177,8 @@ figure {
     float: right;
 }
 
-#viz-importance, #viz-diversity, #viz-dispersion {
-    opacity: 1;
-}
-
 .step {
-    margin: 25px 0;
-}
-
-.step:last-of-type {
-    margin-bottom: 10px;
+    margin: 20px 5px;
 }
 
 .step h2, .step p {
@@ -201,34 +198,27 @@ figure {
     color: #8C8274;
 }
 
+.step p {
+    font-size: .9em;
+    text-align: left;
+}
+
 .step.is-active h2, .step.is-active p {
     border-right-color: #01080D;
     color: #01080D;
 }
 
+/* .step:last-of-type {
+    margin-bottom: 10px;
+} */
+
 p {
     text-align: justify;
     margin-bottom: 25px;
-
 }
 
 p strong {
     font-weight: 700;
-}
-
-ul {
-    margin-bottom: 25px;
-}
-
-ol li {
-    list-style: disc;
-    padding-left: 15px;
-    margin-left: 15px;
-    margin-left: 15px;
-}
-
-.step p {
-    font-size: .9em;
 }
 
 p.separator {
@@ -263,28 +253,7 @@ p span.label {
     color: blue;
 }
 
-.tooltip {
-    margin: 0 auto;
-    margin-bottom: -5px;
-    color: #01080D;
-    position: absolute;
-    right: 20px;
-    width: 500px;
-    text-align: right;
-    font-size: .7em;
-    font-weight: 700;
-}
-
-.axis path, .axis line {
-    color: #F2E8DC;
-    stroke: #F2E8DC;
-}
-
-.axis text {
-    fill: #F2E8DC;
-}
-
 a {
     font-weight: 700;
-    color: #67DDBD;
+    color: #0ea57d;
 }

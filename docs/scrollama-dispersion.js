@@ -13,9 +13,11 @@ const rectangle_height = height / words.length
 const svg_dispersion = d3.select("#viz-dispersion")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
-const chartDispersion = svg_dispersion.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+const chartDispersion = svg_dispersion.append("g").attr("class", "chart");
 
 function makeChartDispersionAlbums() {
     const rectangle_width = width / albums.length;
@@ -77,7 +79,7 @@ function makeChartDispersionAlbums() {
         .style("alignment-baseline", "middle");
 }
 
-const chartDispersionSongs = svg_dispersion.append("g").attr("transform", `translate(${margin.left}, ${margin.top})`);
+const chartDispersionSongs = svg_dispersion.append("g").attr("class", "chart");
 
 const songsPerAlbum = {};
 dispersionSongs.forEach(song => {
