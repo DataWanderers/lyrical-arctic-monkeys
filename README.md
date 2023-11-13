@@ -1,6 +1,6 @@
 # Arctic Monkeys Songs Untangled
 
-[![Medium article](https://img.shields.io/badge/Medium-View%20on%20Medium-red?logo=medium)](https://medium.com/@sborms/scraping-arctic-monkeys-songs-from-genius-31342eb44a23)
+[![Medium article](https://img.shields.io/badge/Medium-View%20on%20Medium-black?logo=medium)](https://medium.com/@sborms/the-evolution-of-arctic-monkeys-songs-explained-with-data-cdd9638f7801)
 
 > Shall I keep scrolling?
 
