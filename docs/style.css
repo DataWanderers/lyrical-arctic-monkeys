@@ -164,7 +164,7 @@ figure {
     right: 0;
     width: 1000px;
     /* margin: 0 auto; */
-    margin-bottom: 2%;
+    margin-bottom: 30px;
     -webkit-transform: translate3d(0, 0, 0);
     -moz-transform: translate3d(0, 0, 0);
     transform: translate3d(0, 0, 0);
