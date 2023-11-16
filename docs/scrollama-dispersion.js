@@ -8,6 +8,7 @@ const songs = dispersionSongs.map(d => d.Song);
 
 const upperCount = 5;
 const colorScale = d3.scaleSequential(d3.interpolateReds).domain([0, upperCount]);
+const zeroColor = "#F2E8DC";
 const rectangle_height = height / words.length
 
 const svg_dispersion = d3.select("#viz-dispersion")
@@ -34,7 +35,7 @@ function makeChartDispersionAlbums() {
         .attr("y", (d, i) => i * rectangle_height)
         .attr("width", rectangle_width)
         .attr("height", rectangle_height)
-        .style("fill", d => colorScale(d.count));
+        .style("fill", d => d.count == 0 ? zeroColor : colorScale(d.count));
 
     chartDispersion.selectAll()
         .data(dispersionAlbums)
@@ -125,7 +126,7 @@ function makeChartDispersionSongs() {
         .attr("y", (d, i) => i * rectangle_height)
         .attr("width", rectangle_width)
         .attr("height", rectangle_height)
-        .style("fill", d => colorScale(d.count))
+        .style("fill", d => d.count == 0 ? zeroColor : colorScale(d.count))
         .on("mouseover", function(d) { showTooltip(d, Tooltip); })
         .on("mouseleave", function(d) { hideTooltip(d, Tooltip); });
 
