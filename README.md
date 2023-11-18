@@ -8,6 +8,8 @@
 
 A very smooth analysis of Arctic Monkeys song lyrics turned into a scrollytelling web page.
 
+_Note:_ the page is not (yet) fit for smaller screens.
+
 ## Where?
 
 Find the web page [here](https://datawanderers.github.io/lyrical-arctic-monkeys).
